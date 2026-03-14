@@ -9,20 +9,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --teal:      #003E51;
-      --teal-mid:  #005166;
-      --teal-light:#e8f4f7;
-      --gold:      #c8a84b;
-      --gold-light:#f5e6b8;
-      --white:     #ffffff;
-      --gray-bg:   #f4f6f7;
-      --gray-line: #dde6ea;
-      --text:      #1a2e36;
-      --muted:     #5a7a85;
-      --radius:    10px;
+      --teal:        #003E51;
+      --teal-dark:   #002938;
+      --teal-mid:    #005166;
+      --teal-pale:   #EEF5F7;
+      --gold:        #C8A84B;
+      --gold-dark:   #A8882B;
+      --gold-pale:   #FBF5E6;
+      --white:       #FFFFFF;
+      --off-white:   #F8FAFB;
+      --gray-100:    #F2F4F5;
+      --gray-200:    #E2E8EB;
+      --gray-400:    #9BB0B8;
+      --gray-600:    #5A7A85;
+      --text:        #0D2B36;
+      --radius-sm:   6px;
+      --radius-md:   12px;
+      --radius-lg:   20px;
+      --shadow-card: 0 2px 8px rgba(0,62,81,0.06), 0 8px 32px rgba(0,62,81,0.08);
+      --shadow-hover: 0 8px 24px rgba(0,62,81,0.12), 0 24px 56px rgba(0,62,81,0.12);
+      --transition:  0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
     body {
       font-family: 'Heebo', sans-serif;
       background: var(--white);
@@ -30,448 +40,592 @@
       overflow-x: hidden;
     }
 
-    /* ── Nav ── */
+    /* ─────────────────────────────────────────
+       NAV
+    ───────────────────────────────────────── */
     nav {
-      position: sticky; top: 0; z-index: 200;
+      position: sticky; top: 0; z-index: 300;
       background: var(--white);
-      border-bottom: 2px solid var(--teal);
+      border-bottom: 1px solid var(--gray-200);
+      height: 72px;
       display: flex; align-items: center;
-      justify-content: space-between;
-      padding: 0 60px; height: 70px;
-      box-shadow: 0 2px 12px rgba(0,62,81,0.08);
+      padding: 0 64px;
+      gap: 40px;
     }
-    .logo {
-      display: flex; align-items: center; gap: 12px;
-      text-decoration: none;
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; flex-shrink: 0;
     }
-    .logo-text {
-      font-size: 1.3rem; font-weight: 900;
-      color: var(--teal); letter-spacing: -0.01em;
-    }
-    .logo-text span { color: var(--gold); }
-    .logo-badge {
+    .nav-logo-mark {
+      width: 36px; height: 36px;
       background: var(--teal);
-      color: var(--white);
-      font-size: 0.65rem; font-weight: 700;
-      padding: 3px 8px; border-radius: 4px;
-      letter-spacing: 0.05em;
-    }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a {
-      color: var(--teal); text-decoration: none;
-      font-size: 0.9rem; font-weight: 500;
-      transition: color 0.2s;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
       position: relative;
+    }
+    .nav-logo-mark::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; right: -3px;
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      border: 2px solid var(--white);
+    }
+    .nav-logo-mark svg { display: block; }
+    .nav-brand {
+      font-size: 1rem; font-weight: 900;
+      color: var(--teal); letter-spacing: -0.01em; line-height: 1;
+    }
+    .nav-brand span { color: var(--gold); }
+    .nav-brand sub {
+      display: block; font-size: 0.6rem; font-weight: 500;
+      color: var(--gray-400); letter-spacing: 0.12em;
+      text-transform: uppercase; margin-top: 1px;
+      vertical-align: baseline;
+    }
+
+    .nav-links {
+      display: flex; gap: 28px; list-style: none;
+      margin-right: auto;
+    }
+    .nav-links a {
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--gray-600); text-decoration: none;
+      transition: color var(--transition);
+      position: relative; padding-bottom: 2px;
     }
     .nav-links a::after {
       content: ''; position: absolute;
-      bottom: -4px; right: 0;
+      bottom: -2px; right: 0;
       width: 0; height: 2px;
       background: var(--gold);
-      transition: width 0.3s;
+      transition: width var(--transition);
     }
-    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover { color: var(--teal); }
     .nav-links a:hover::after { width: 100%; }
-    .nav-cta {
-      background: var(--gold);
-      color: var(--teal);
-      font-family: 'Heebo', sans-serif;
-      font-size: 0.88rem; font-weight: 700;
-      padding: 10px 24px; border: none;
-      border-radius: 6px; cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .nav-cta:hover { background: #b8942f; transform: translateY(-1px); }
 
-    /* ── Hero ── */
-    #hero {
-      background: var(--teal);
-      padding: 80px 60px 70px;
-      position: relative; overflow: hidden;
-    }
-    #hero::before {
-      content: 'AI';
-      position: absolute;
-      left: -20px; top: 50%;
-      transform: translateY(-50%);
-      font-size: 22rem; font-weight: 900;
-      color: rgba(255,255,255,0.04);
-      letter-spacing: -0.05em;
-      pointer-events: none; line-height: 1;
-    }
-    .hero-inner {
-      max-width: 1200px; margin: 0 auto;
-      display: flex; align-items: center;
-      justify-content: space-between; gap: 40px;
-      flex-wrap: wrap;
-    }
-    .hero-left { max-width: 600px; }
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(200,168,75,0.2);
-      border: 1px solid rgba(200,168,75,0.5);
-      border-radius: 4px; padding: 5px 14px;
-      font-size: 0.75rem; font-weight: 700;
-      color: var(--gold); letter-spacing: 0.1em;
-      text-transform: uppercase; margin-bottom: 22px;
-    }
-    h1 {
-      font-size: clamp(2.2rem, 4vw, 3.6rem);
-      font-weight: 900; line-height: 1.1;
-      letter-spacing: -0.02em;
-      color: var(--white); margin-bottom: 18px;
-    }
-    h1 em { font-style: normal; color: var(--gold); }
-    .hero-sub {
-      font-size: 1rem; font-weight: 300;
-      color: rgba(255,255,255,0.75);
-      line-height: 1.8; max-width: 500px;
-      margin-bottom: 36px;
-    }
-    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
-    .btn-gold {
+    .nav-cta {
       display: inline-flex; align-items: center; gap: 8px;
       background: var(--gold); color: var(--teal);
-      font-family: 'Heebo', sans-serif;
-      font-size: 0.95rem; font-weight: 700;
-      padding: 14px 30px; border-radius: 6px;
+      font-family: 'Heebo', sans-serif; font-size: 0.875rem; font-weight: 700;
+      padding: 10px 22px; border-radius: var(--radius-sm);
       border: none; cursor: pointer; text-decoration: none;
-      transition: background 0.2s, transform 0.2s;
+      flex-shrink: 0;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
     }
-    .btn-gold:hover { background: #b8942f; transform: translateY(-2px); }
-    .btn-outline-white {
+    .nav-cta:hover {
+      background: var(--gold-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(200,168,75,0.35);
+    }
+
+    /* ─────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────── */
+    #hero {
+      background: var(--teal);
+      position: relative; overflow: hidden;
+      padding: 100px 64px 0;
+    }
+    #hero-particles {
+      position: absolute; inset: 0;
+      pointer-events: none; z-index: 0;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: 32px;
+      opacity: 0; animation: fadeUp 0.7s 0.1s forwards;
+    }
+    .eyebrow-line {
+      width: 32px; height: 1px; background: var(--gold);
+    }
+    .eyebrow-text {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .hero-headline {
+      font-size: clamp(3rem, 6.5vw, 6rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 28px;
+      opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .hero-headline .gold { color: var(--gold); }
+    .hero-headline .outline {
+      -webkit-text-stroke: 2px rgba(255,255,255,0.4);
+      color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem; font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.75; max-width: 520px;
+      margin-bottom: 48px;
+      opacity: 0; animation: fadeUp 0.8s 0.35s forwards;
+    }
+
+    .hero-actions {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 80px;
+      opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+    }
+    .btn-gold-lg {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--gold); color: var(--teal);
+      font-family: 'Heebo', sans-serif; font-size: 1rem; font-weight: 700;
+      padding: 15px 32px; border-radius: var(--radius-sm);
+      border: none; cursor: pointer; text-decoration: none;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .btn-gold-lg:hover {
+      background: var(--gold-dark); transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(200,168,75,0.4);
+    }
+    .btn-ghost {
       display: inline-flex; align-items: center; gap: 8px;
-      background: transparent; color: var(--white);
-      font-family: 'Heebo', sans-serif;
-      font-size: 0.9rem; font-weight: 500;
-      padding: 13px 26px; border-radius: 6px;
-      border: 1.5px solid rgba(255,255,255,0.4);
-      cursor: pointer; text-decoration: none;
-      transition: border-color 0.2s, background 0.2s;
+      color: rgba(255,255,255,0.7);
+      font-family: 'Heebo', sans-serif; font-size: 0.9rem; font-weight: 400;
+      text-decoration: none;
+      transition: color var(--transition);
     }
-    .btn-outline-white:hover {
-      border-color: var(--white);
-      background: rgba(255,255,255,0.08);
-    }
+    .btn-ghost:hover { color: var(--white); }
+    .btn-ghost svg { transition: transform var(--transition); }
+    .btn-ghost:hover svg { transform: translateX(-4px); }
+
+    /* Hero stats strip */
     .hero-stats {
-      display: flex; gap: 0;
-      align-self: center;
+      display: flex; align-items: stretch;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      opacity: 0; animation: fadeUp 0.8s 0.65s forwards;
     }
     .hero-stat {
-      padding: 20px 36px;
-      border-right: 1px solid rgba(255,255,255,0.15);
-      text-align: center;
+      flex: 1; padding: 32px 0;
+      border-left: 1px solid rgba(255,255,255,0.08);
+      position: relative;
     }
-    .hero-stat:first-child { border-right: none; }
+    .hero-stat:last-child { border-right: 1px solid rgba(255,255,255,0.08); }
     .hero-stat-num {
-      font-size: 2.4rem; font-weight: 900;
+      font-size: 2.8rem; font-weight: 900;
       color: var(--gold); line-height: 1;
+      letter-spacing: -0.03em;
     }
     .hero-stat-lbl {
-      font-size: 0.78rem; color: rgba(255,255,255,0.6);
-      margin-top: 4px;
+      font-size: 0.78rem; font-weight: 400;
+      color: rgba(255,255,255,0.5);
+      margin-top: 6px; letter-spacing: 0.03em;
     }
 
-    /* ── Particles (subtle, teal bg) ── */
-    #particles {
-      position: absolute; inset: 0;
-      pointer-events: none; z-index: 0; opacity: 0.4;
+    /* ─────────────────────────────────────────
+       SECTION LABEL UTILITY
+    ───────────────────────────────────────── */
+    .section-label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 8px;
+      display: flex; align-items: center; gap: 10px;
     }
-    .hero-inner { position: relative; z-index: 1; }
+    .section-label::before {
+      content: ''; width: 24px; height: 1px; background: var(--gold);
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 900; color: var(--teal);
+      letter-spacing: -0.025em; line-height: 1.1;
+      padding-bottom: 14px;
+      position: relative; display: inline-block;
+    }
+    .section-title::after {
+      content: ''; position: absolute;
+      bottom: 0; right: 0;
+      width: 48px; height: 3px;
+      background: var(--gold);
+    }
 
-    /* ── Filter bar ── */
+    /* ─────────────────────────────────────────
+       FILTER BAR
+    ───────────────────────────────────────── */
     .filter-wrap {
-      background: var(--teal-light);
-      border-bottom: 1px solid var(--gray-line);
+      background: var(--off-white);
+      border-bottom: 1px solid var(--gray-200);
     }
     .filter-bar {
       max-width: 1200px; margin: 0 auto;
-      padding: 18px 60px;
+      padding: 20px 64px;
       display: flex; align-items: center; gap: 10px;
       flex-wrap: wrap;
     }
-    .filter-label {
-      font-size: 0.82rem; font-weight: 700;
-      color: var(--teal); margin-left: 10px;
+    .filter-label-txt {
+      font-size: 0.78rem; font-weight: 700;
+      color: var(--gray-400); text-transform: uppercase;
+      letter-spacing: 0.1em; margin-left: 8px;
     }
     .filter-btn {
-      padding: 7px 18px;
+      padding: 8px 20px;
       background: var(--white);
-      border: 1.5px solid var(--gray-line);
+      border: 1px solid var(--gray-200);
       border-radius: 100px;
-      color: var(--muted);
+      color: var(--gray-600);
       font-family: 'Heebo', sans-serif;
       font-size: 0.82rem; font-weight: 500;
-      cursor: pointer; transition: all 0.2s;
+      cursor: pointer;
+      transition: all var(--transition);
     }
-    .filter-btn:hover { border-color: var(--teal); color: var(--teal); }
+    .filter-btn:hover {
+      border-color: var(--teal); color: var(--teal);
+      background: var(--teal-pale);
+    }
     .filter-btn.active {
       background: var(--teal); border-color: var(--teal);
-      color: var(--white);
+      color: var(--white); font-weight: 700;
     }
 
-    /* ── Creators section ── */
-    .creators-wrap {
+    /* ─────────────────────────────────────────
+       CREATORS GRID
+    ───────────────────────────────────────── */
+    .creators-section {
       max-width: 1200px; margin: 0 auto;
-      padding: 50px 60px 90px;
+      padding: 64px 64px 100px;
     }
-    .section-header {
-      display: flex; align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 36px; flex-wrap: wrap; gap: 12px;
+    .creators-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between; margin-bottom: 48px;
+      flex-wrap: wrap; gap: 16px;
     }
-    .section-header h2 {
-      font-size: 1.6rem; font-weight: 900;
-      color: var(--teal); letter-spacing: -0.02em;
-    }
-    .section-header h2::after {
-      content: ''; display: block;
-      width: 50px; height: 3px;
-      background: var(--gold); margin-top: 6px;
-    }
-    .count-badge {
-      font-size: 0.82rem; color: var(--muted); font-weight: 400;
+    .creators-count {
+      font-size: 0.82rem; color: var(--gray-400);
+      font-weight: 400; padding-bottom: 4px;
     }
 
-    /* ── Creator card ── */
     #creators {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
     }
+
+    /* ── Card ── */
     .creator-card {
       background: var(--white);
-      border: 1.5px solid var(--gray-line);
-      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
       overflow: hidden;
       text-decoration: none; color: inherit;
       display: flex; flex-direction: column;
-      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      box-shadow: var(--shadow-card);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      opacity: 0; transform: translateY(20px);
+    }
+    .creator-card.visible {
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease,
+                  box-shadow var(--transition), border-color var(--transition);
     }
     .creator-card:hover {
-      transform: translateY(-6px);
-      border-color: var(--teal);
-      box-shadow: 0 12px 36px rgba(0,62,81,0.13);
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(0,62,81,0.2);
     }
+
+    /* Thumbs */
     .card-thumbs {
       display: grid;
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 3fr 2fr;
       grid-template-rows: 1fr 1fr;
-      height: 190px; gap: 2px;
-      background: var(--gray-line);
+      height: 200px; gap: 2px;
+      background: var(--gray-200);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      overflow: hidden;
     }
     .card-thumb {
+      background: var(--teal-pale);
       overflow: hidden; position: relative;
-      background: var(--teal-light);
-      display: flex; align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
     }
     .card-thumb:first-child { grid-row: 1 / 3; }
-    .card-thumb img {
-      width: 100%; height: 100%; object-fit: cover;
-      transition: transform 0.4s;
+    .card-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .creator-card:hover .card-thumb img { transform: scale(1.06); }
+    .thumb-emoji {
+      font-size: 2.2rem; line-height: 1;
+      transition: transform 0.3s ease;
     }
-    .creator-card:hover .card-thumb img { transform: scale(1.05); }
-    .thumb-placeholder {
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2rem;
-    }
-    .play-icon {
+    .creator-card:hover .thumb-emoji { transform: scale(1.1); }
+    .thumb-play {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
-      background: rgba(0,62,81,0.4);
-      opacity: 0; transition: opacity 0.3s;
+      background: rgba(0,62,81,0.5);
+      opacity: 0; transition: opacity var(--transition);
     }
-    .creator-card:hover .play-icon { opacity: 1; }
+    .creator-card:hover .thumb-play { opacity: 1; }
     .play-circle {
-      width: 44px; height: 44px;
+      width: 48px; height: 48px;
       background: var(--gold); border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(200,168,75,0.5);
     }
 
-    .card-body { padding: 18px 20px 20px; flex: 1; }
-    .card-header {
-      display: flex; align-items: center; gap: 12px;
-      margin-bottom: 12px;
+    /* Card body */
+    .card-body { padding: 22px 24px 24px; flex: 1; display: flex; flex-direction: column; }
+
+    .card-top {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 14px;
     }
-    .avatar {
-      width: 44px; height: 44px; min-width: 44px;
-      border-radius: 50%;
-      background: var(--teal);
-      border: 2px solid var(--gold-light);
+    .card-avatar {
+      width: 46px; height: 46px; min-width: 46px;
+      border-radius: 50%; background: var(--teal);
+      border: 2px solid var(--gold-pale);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; overflow: hidden;
+      font-size: 1.15rem; overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,62,81,0.15);
     }
-    .avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .creator-name { font-size: 1rem; font-weight: 700; color: var(--teal); }
-    .creator-handle { font-size: 0.75rem; color: var(--muted); }
-    .spec-tag {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: var(--teal-light);
-      border: 1px solid rgba(0,62,81,0.15);
-      border-radius: 4px; padding: 3px 10px;
-      font-size: 0.72rem; font-weight: 700;
-      color: var(--teal); margin-bottom: 10px;
+    .card-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .card-name {
+      font-size: 1.05rem; font-weight: 700; color: var(--teal);
+      letter-spacing: -0.01em; line-height: 1.2;
     }
-    .creator-bio {
-      font-size: 0.84rem; color: var(--muted);
-      line-height: 1.65; margin-bottom: 16px;
+    .card-handle { font-size: 0.75rem; color: var(--gray-400); margin-top: 1px; }
+
+    .card-spec {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--teal-pale); border: 1px solid rgba(0,62,81,0.12);
+      border-radius: var(--radius-sm); padding: 4px 12px;
+      font-size: 0.72rem; font-weight: 700; color: var(--teal);
+      letter-spacing: 0.04em; margin-bottom: 12px; width: fit-content;
     }
+    .card-spec-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .card-bio {
+      font-size: 0.84rem; font-weight: 400;
+      color: var(--gray-600); line-height: 1.7;
+      flex: 1; margin-bottom: 18px;
+    }
+
     .card-footer {
-      display: flex; justify-content: space-between;
-      align-items: center; padding-top: 14px;
-      border-top: 1px solid var(--gray-line);
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid var(--gray-200);
     }
-    .card-stat-num { font-size: 1.05rem; font-weight: 700; color: var(--teal); line-height: 1; }
-    .card-stat-lbl { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
-    .card-arrow {
-      width: 34px; height: 34px;
-      background: var(--teal-light);
-      border: 1px solid var(--gray-line);
-      border-radius: 50%;
+    .card-stats { display: flex; gap: 20px; }
+    .card-stat-num {
+      font-size: 1.1rem; font-weight: 900; color: var(--teal); line-height: 1;
+    }
+    .card-stat-lbl {
+      font-size: 0.68rem; color: var(--gray-400); margin-top: 2px;
+    }
+    .card-divider {
+      width: 1px; height: 32px; background: var(--gray-200);
+    }
+    .card-cta {
       display: flex; align-items: center; justify-content: center;
-      color: var(--teal);
-      transition: background 0.3s, color 0.3s, transform 0.3s;
+      width: 38px; height: 38px;
+      background: var(--teal-pale);
+      border: 1px solid var(--gray-200);
+      border-radius: 50%; color: var(--teal);
+      transition: all var(--transition);
     }
-    .creator-card:hover .card-arrow {
-      background: var(--gold); color: var(--teal);
-      transform: translateX(-3px);
+    .creator-card:hover .card-cta {
+      background: var(--gold); border-color: var(--gold);
+      color: var(--teal); transform: translateX(-3px);
     }
 
-    /* ── About strip ── */
+    /* ─────────────────────────────────────────
+       ABOUT SECTION
+    ───────────────────────────────────────── */
     #about {
       background: var(--teal);
-      padding: 70px 60px;
+      padding: 100px 64px;
+      position: relative; overflow: hidden;
+    }
+    #about::before {
+      content: 'BUZZ';
+      position: absolute; left: -40px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 18rem; font-weight: 900;
+      color: rgba(255,255,255,0.03);
+      letter-spacing: -0.05em; pointer-events: none;
+      line-height: 1;
     }
     .about-inner {
       max-width: 1200px; margin: 0 auto;
-      display: flex; align-items: center;
-      justify-content: space-between; gap: 60px;
-      flex-wrap: wrap;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+      position: relative; z-index: 1;
     }
-    .about-text { max-width: 540px; }
-    .about-eyebrow {
-      font-size: 0.75rem; font-weight: 700;
-      color: var(--gold); letter-spacing: 0.15em;
-      text-transform: uppercase; margin-bottom: 16px;
+    .about-text .section-label { /* override for dark bg */
+      color: var(--gold);
     }
-    #about h2 {
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
-      font-weight: 900; color: var(--white);
-      letter-spacing: -0.02em; margin-bottom: 18px;
-      line-height: 1.15;
+    .about-text .section-title {
+      color: var(--white); margin-bottom: 24px;
     }
-    #about h2 em { font-style: normal; color: var(--gold); }
-    #about p {
-      font-size: 0.95rem; color: rgba(255,255,255,0.72);
-      line-height: 1.8;
+    .about-text .section-title::after { background: var(--gold); }
+    .about-text .section-title em { font-style: normal; color: var(--gold); }
+    .about-desc {
+      font-size: 0.95rem; font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.85;
     }
+
     .about-features {
       display: grid; grid-template-columns: 1fr 1fr;
-      gap: 20px; min-width: 320px;
+      gap: 16px;
     }
-    .feat-box {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: var(--radius);
-      padding: 22px;
-      transition: background 0.3s, border-color 0.3s;
+    .feat {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      transition: background var(--transition), border-color var(--transition);
     }
-    .feat-box:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: rgba(200,168,75,0.4);
+    .feat:hover {
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(200,168,75,0.3);
     }
-    .feat-icon {
-      font-size: 1.6rem; margin-bottom: 10px;
-    }
+    .feat-icon { font-size: 1.5rem; margin-bottom: 12px; }
     .feat-title {
-      font-size: 0.9rem; font-weight: 700;
-      color: var(--white); margin-bottom: 4px;
+      font-size: 0.9rem; font-weight: 700; color: var(--white); margin-bottom: 4px;
     }
-    .feat-desc {
-      font-size: 0.78rem; color: rgba(255,255,255,0.55);
-      line-height: 1.6;
-    }
+    .feat-desc { font-size: 0.78rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
 
-    /* ── Footer ── */
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
     footer {
-      background: #001e2a;
-      padding: 36px 60px;
-      display: flex; justify-content: space-between;
-      align-items: center; flex-wrap: wrap; gap: 16px;
+      background: var(--teal-dark);
+      padding: 40px 64px;
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 20px;
     }
-    footer .logo-text { color: var(--white); font-size: 1.1rem; }
-    footer p { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
-    footer a { color: var(--gold); text-decoration: none; }
+    footer .nav-brand { color: var(--white); }
+    .footer-copy {
+      font-size: 0.78rem; color: rgba(255,255,255,0.35);
+    }
+    .footer-copy a { color: var(--gold); text-decoration: none; }
+    .footer-copy a:hover { text-decoration: underline; }
 
-    /* ── Responsive ── */
-    @media (max-width: 900px) {
-      nav { padding: 0 20px; }
+    /* ─────────────────────────────────────────
+       ANIMATIONS
+    ───────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────── */
+    @media (max-width: 1100px) {
+      #creators { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 860px) {
+      nav { padding: 0 24px; gap: 16px; }
       .nav-links { display: none; }
-      #hero { padding: 60px 20px 50px; }
-      .filter-bar { padding: 14px 20px; }
-      .creators-wrap { padding: 36px 20px 60px; }
-      #about { padding: 50px 20px; }
+      #hero { padding: 70px 24px 0; }
+      .filter-bar { padding: 16px 24px; }
+      .creators-section { padding: 48px 24px 70px; }
+      #creators { grid-template-columns: 1fr; }
+      #about { padding: 70px 24px; }
+      .about-inner { grid-template-columns: 1fr; gap: 48px; }
       .about-features { grid-template-columns: 1fr; }
-      footer { padding: 28px 20px; flex-direction: column; text-align: center; }
-      .hero-stats { gap: 0; }
-      .hero-stat { padding: 16px 20px; }
+      footer { padding: 28px 24px; flex-direction: column; text-align: center; }
+      .hero-stats { flex-wrap: wrap; }
+      .hero-stat { min-width: 50%; border-bottom: 1px solid rgba(255,255,255,0.06); }
     }
   </style>
 </head>
 <body>
 
-<!-- Particles canvas (inside hero) -->
-
+<!-- ── NAV ── -->
 <nav>
-  <a href="index.html" class="logo">
-    <div class="logo-text">BUZZ MARKET <span>AI</span></div>
-    <div class="logo-badge">CREATORS</div>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
+        <path d="M9 2L3 6v6l6 4 6-4V6L9 2z" stroke="#C8A84B" stroke-width="1.5" fill="none"/>
+        <circle cx="9" cy="9" r="2" fill="#C8A84B"/>
+      </svg>
+    </div>
+    <div class="nav-brand">
+      BUZZ MARKET <span>AI</span>
+      <sub>CREATORS PLATFORM</sub>
+    </div>
   </a>
+
   <ul class="nav-links">
     <li><a href="#creators-section">יוצרים</a></li>
     <li><a href="#about">אודות</a></li>
     <li><a href="https://www.buzzmarket.co.il" target="_blank">BuzzMarket</a></li>
   </ul>
-  <a href="mailto:hello@buzzmarket.co.il" class="nav-cta">הצטרף כיוצר</a>
+
+  <a href="mailto:hello@buzzmarket.co.il" class="nav-cta">
+    הצטרף כיוצר
+  </a>
 </nav>
 
+<!-- ── HERO ── -->
 <section id="hero">
-  <canvas id="particles"></canvas>
+  <canvas id="hero-particles"></canvas>
   <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-eyebrow">✦ פלטפורמת יוצרי AI</div>
-      <h1>יוצרי AI.<br>תוכן שמייצר <em>תוצאות.</em></h1>
-      <p class="hero-sub">
-        הפלטפורמה שמחברת בין יוצרי וידאו ואנימציה מבוססי AI לבין עסקים שצריכים תוכן שעובד. מבית BuzzMarket.
-      </p>
-      <div class="hero-btns">
-        <a href="#creators-section" class="btn-gold">גלה את היוצרים</a>
-        <a href="mailto:hello@buzzmarket.co.il" class="btn-outline-white">הצטרף כיוצר</a>
-      </div>
+    <div class="hero-eyebrow">
+      <span class="eyebrow-line"></span>
+      <span class="eyebrow-text">פלטפורמת יוצרי AI · BuzzMarket</span>
     </div>
+
+    <h1 class="hero-headline">
+      יוצרי AI.<br>
+      תוכן שמייצר<br>
+      <span class="gold">תוצאות.</span>
+    </h1>
+
+    <p class="hero-sub">
+      הפלטפורמה שמחברת בין יוצרי וידאו ואנימציה מבוססי AI לבין עסקים שצריכים תוכן שעובד. מבית BuzzMarket — 15 שנות ניסיון בשיווק דיגיטלי.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#creators-section" class="btn-gold-lg">
+        גלה את היוצרים
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      </a>
+      <a href="mailto:hello@buzzmarket.co.il" class="btn-ghost">
+        הצטרף כיוצר
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      </a>
+    </div>
+
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-num">24+</div>
+        <div class="hero-stat-num">24<span style="font-size:1.4rem">+</span></div>
         <div class="hero-stat-lbl">יוצרים פעילים</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num">500+</div>
+        <div class="hero-stat-num">500<span style="font-size:1.4rem">+</span></div>
         <div class="hero-stat-lbl">סרטונים שנוצרו</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-num">100<span style="font-size:1.4rem">%</span></div>
         <div class="hero-stat-lbl">מבוסס AI</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">15<span style="font-size:1.4rem">+</span></div>
+        <div class="hero-stat-lbl">שנות ניסיון</div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ── FILTER ── -->
 <div class="filter-wrap">
   <div class="filter-bar">
-    <span class="filter-label">סינון לפי:</span>
+    <span class="filter-label-txt">סינון:</span>
     <button class="filter-btn active" data-filter="all">הכל</button>
     <button class="filter-btn" data-filter="video">וידאו</button>
     <button class="filter-btn" data-filter="animation">אנימציה</button>
@@ -480,40 +634,45 @@
   </div>
 </div>
 
-<div class="creators-wrap" id="creators-section">
-  <div class="section-header">
-    <h2>היוצרים שלנו</h2>
-    <span class="count-badge" id="count-label">מציג 6 יוצרים</span>
+<!-- ── CREATORS ── -->
+<div class="creators-section" id="creators-section">
+  <div class="creators-header">
+    <div>
+      <div class="section-label">הצוות שלנו</div>
+      <div class="section-title">היוצרים שלנו</div>
+    </div>
+    <div class="creators-count" id="count-label">6 יוצרים</div>
   </div>
   <div id="creators"></div>
 </div>
 
+<!-- ── ABOUT ── -->
 <section id="about">
   <div class="about-inner">
     <div class="about-text">
-      <div class="about-eyebrow">מי אנחנו</div>
-      <h2>תוכן AI שמדבר<br><em>ללקוחות שלך</em></h2>
-      <p>
+      <div class="section-label">מי אנחנו</div>
+      <div class="section-title">תוכן AI שמדבר<br><em>ללקוחות שלך</em></div>
+      <p class="about-desc" style="margin-top:24px">
         באזמרקט מחברת בין עסקים לבין יוצרי תוכן AI מהטובים בישראל. כל יוצר הוא מומחה בסגנון שלו — ביחד הם מספקים מגוון רחב של פתרונות וידאו ואנימציה, מהיר ובמחיר נגיש.
       </p>
     </div>
     <div class="about-features">
-      <div class="feat-box">
+      <div class="feat">
         <div class="feat-icon">⚡</div>
         <div class="feat-title">מהירות</div>
         <div class="feat-desc">סרטון מוכן תוך ימים ספורים</div>
       </div>
-      <div class="feat-box">
+      <div class="feat">
         <div class="feat-icon">🎯</div>
         <div class="feat-title">מדידה</div>
         <div class="feat-desc">תוכן שמתוכנן להמיר לקוחות</div>
       </div>
-      <div class="feat-box">
+      <div class="feat">
         <div class="feat-icon">🤝</div>
         <div class="feat-title">מקצועיות</div>
         <div class="feat-desc">יוצרים מנוסים עם תיק עבודות</div>
       </div>
-      <div class="feat-box">
+      <div class="feat">
         <div class="feat-icon">💡</div>
         <div class="feat-title">חדשנות</div>
         <div class="feat-desc">טכנולוגיית AI מהחדשה ביותר</div>
@@ -522,99 +681,131 @@
   </div>
 </section>
 
+<!-- ── FOOTER ── -->
 <footer>
-  <div class="logo-text" style="font-family:'Heebo',sans-serif;font-weight:900;">
-    BUZZ MARKET <span style="color:var(--gold)">AI</span>
+  <div class="nav-logo" style="pointer-events:none">
+    <div class="nav-logo-mark">
+      <svg width="18" height="18" fill="none" viewBox="0 0 18 18">
+        <path d="M9 2L3 6v6l6 4 6-4V6L9 2z" stroke="#C8A84B" stroke-width="1.5" fill="none"/>
+        <circle cx="9" cy="9" r="2" fill="#C8A84B"/>
+      </svg>
+    </div>
+    <div class="nav-brand">
+      BUZZ MARKET <span>AI</span>
+      <sub>CREATORS PLATFORM</sub>
+    </div>
   </div>
-  <p>© 2025 כל הזכויות שמורות · <a href="https://www.buzzmarket.co.il" target="_blank">buzzmarket.co.il</a></p>
+  <p class="footer-copy">
+    © 2025 AI Creature · מבית <a href="https://www.buzzmarket.co.il" target="_blank">BuzzMarket</a>
+  </p>
 </footer>
 
 <script>
-const creators = [
+// ── Data ────────────────────────────────────────────────────────
+const CREATORS = [
   {
-    id: "noa-levi", name: "נועה לוי", handle: "@noa.creates",
-    spec: "אנימציה", tag: "animation", emoji: "🎨",
-    bio: "מתמחה באנימציות מוצר ובסרטוני סטוריטלינג. יוצרת עולמות ויזואליים שמחברים בין מותג לרגש.",
-    videos: 18, clients: 12, rating: "4.9", thumbs: ["🎬","✨","🌊"]
+    id:"noa-levi", name:"נועה לוי", handle:"@noa.creates",
+    spec:"אנימציה", tag:"animation", emoji:"🎨",
+    bio:"מתמחה באנימציות מוצר ובסרטוני סטוריטלינג. יוצרת עולמות ויזואליים שמחברים בין מותג לרגש.",
+    videos:18, clients:12, rating:"4.9",
+    thumbColor:["#D4E8EE","#C5DFE8","#B8D8E4"]
   },
   {
-    id: "yoav-cohen", name: "יואב כהן", handle: "@yoav.motion",
-    spec: "מושן גרפיקס", tag: "motion", emoji: "⚡",
-    bio: "מושן גרפיקס ברמה גבוהה לפרסומות דיגיטליות, ריילז ותוכן מותגי. מהיר, מדויק, מרשים.",
-    videos: 34, clients: 21, rating: "5.0", thumbs: ["📱","🎯","💎"]
+    id:"yoav-cohen", name:"יואב כהן", handle:"@yoav.motion",
+    spec:"מושן גרפיקס", tag:"motion", emoji:"⚡",
+    bio:"מושן גרפיקס ברמה גבוהה לפרסומות דיגיטליות, ריילז ותוכן מותגי. מהיר, מדויק, מרשים.",
+    videos:34, clients:21, rating:"5.0",
+    thumbColor:["#E8F2D4","#DDE8C5","#D2E0B8"]
   },
   {
-    id: "maya-shapira", name: "מאיה שפירא", handle: "@maya.ai",
-    spec: "אווטאר AI", tag: "avatar", emoji: "🤖",
-    bio: "יוצרת דמויות AI ריאליסטיות לסרטוני הסבר, פרזנטציות ומודעות פרסום.",
-    videos: 22, clients: 15, rating: "4.8", thumbs: ["👤","🎤","📺"]
+    id:"maya-shapira", name:"מאיה שפירא", handle:"@maya.ai",
+    spec:"אווטאר AI", tag:"avatar", emoji:"🤖",
+    bio:"יוצרת דמויות AI ריאליסטיות לסרטוני הסבר, פרזנטציות ומודעות פרסום.",
+    videos:22, clients:15, rating:"4.8",
+    thumbColor:["#EEE8D4","#E8DEC5","#E0D4B8"]
   },
   {
-    id: "dan-mizrahi", name: "דן מזרחי", handle: "@dan.video",
-    spec: "וידאו AI", tag: "video", emoji: "🎥",
-    bio: "מתמחה בהפקת וידאו מלא מבוסס AI — מסקריפט ועד עריכה סופית. מהיר וחסכוני.",
-    videos: 41, clients: 28, rating: "4.9", thumbs: ["🏙️","🚀","🎵"]
+    id:"dan-mizrahi", name:"דן מזרחי", handle:"@dan.video",
+    spec:"וידאו AI", tag:"video", emoji:"🎥",
+    bio:"מתמחה בהפקת וידאו מלא מבוסס AI — מסקריפט ועד עריכה סופית. מהיר, חסכוני, ואיכותי.",
+    videos:41, clients:28, rating:"4.9",
+    thumbColor:["#D4D8EE","#C5CCE8","#B8C2E0"]
   },
   {
-    id: "shir-ben-david", name: "שיר בן דוד", handle: "@shir.creates",
-    spec: "אנימציה", tag: "animation", emoji: "🌟",
-    bio: "אנימציות 2D ו-3D לעסקים קטנים ובינוניים. מחיר נגיש, תוצאה פרמיום.",
-    videos: 15, clients: 10, rating: "4.7", thumbs: ["🦋","💫","🌈"]
+    id:"shir-ben-david", name:"שיר בן דוד", handle:"@shir.creates",
+    spec:"אנימציה", tag:"animation", emoji:"🌟",
+    bio:"אנימציות 2D ו-3D לעסקים קטנים ובינוניים. מחיר נגיש, תוצאה פרמיום.",
+    videos:15, clients:10, rating:"4.7",
+    thumbColor:["#EED4E8","#E8C5DE","#E0B8D4"]
   },
   {
-    id: "oren-katz", name: "אורן כץ", handle: "@oren.motion",
-    spec: "מושן גרפיקס", tag: "motion", emoji: "🎯",
-    bio: "גרפיקה עיצובית בתנועה — מספר את הסיפור של המותג שלך בפחות מ-30 שניות.",
-    videos: 29, clients: 19, rating: "4.9", thumbs: ["📊","🔮","⚙️"]
+    id:"oren-katz", name:"אורן כץ", handle:"@oren.motion",
+    spec:"מושן גרפיקס", tag:"motion", emoji:"🎯",
+    bio:"גרפיקה עיצובית בתנועה — מספר את הסיפור של המותג שלך בפחות מ-30 שניות.",
+    videos:29, clients:19, rating:"4.9",
+    thumbColor:["#D4EEE4","#C5E8D8","#B8E0CC"]
   },
 ];
 
+// ── Render ───────────────────────────────────────────────────────
 function renderCreators(filter = 'all') {
   const grid = document.getElementById('creators');
-  const list = filter === 'all' ? creators : creators.filter(c => c.tag === filter);
-  document.getElementById('count-label').textContent = `מציג ${list.length} יוצרים`;
-  grid.innerHTML = list.map(c => `
-    <a class="creator-card" href="creator.html?id=${c.id}">
+  const list = filter === 'all' ? CREATORS : CREATORS.filter(c => c.tag === filter);
+  document.getElementById('count-label').textContent = `${list.length} יוצרים`;
+
+  grid.innerHTML = list.map((c, i) => `
+    <a class="creator-card" href="creator.html?id=${c.id}" style="transition-delay:${i * 0.08}s">
       <div class="card-thumbs">
-        <div class="card-thumb">
-          <div class="thumb-placeholder" style="background:var(--teal-light);font-size:2.8rem">${c.thumbs[0]}</div>
-          <div class="play-icon">
+        <div class="card-thumb" style="background:${c.thumbColor[0]}">
+          <div class="thumb-emoji">${c.emoji}</div>
+          <div class="thumb-play">
             <div class="play-circle">
               <svg width="18" height="18" fill="var(--teal)" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>
             </div>
           </div>
         </div>
-        <div class="card-thumb">
-          <div class="thumb-placeholder" style="background:var(--teal-light);font-size:2rem">${c.thumbs[1]}</div>
+        <div class="card-thumb" style="background:${c.thumbColor[1]}">
+          <div class="thumb-emoji" style="font-size:1.4rem">🎬</div>
         </div>
-        <div class="card-thumb">
-          <div class="thumb-placeholder" style="background:var(--teal-light);font-size:2rem">${c.thumbs[2]}</div>
+        <div class="card-thumb" style="background:${c.thumbColor[2]}">
+          <div class="thumb-emoji" style="font-size:1.4rem">✨</div>
         </div>
       </div>
+
       <div class="card-body">
-        <div class="card-header">
-          <div class="avatar">${c.emoji}</div>
+        <div class="card-top">
+          <div class="card-avatar">${c.emoji}</div>
           <div>
-            <div class="creator-name">${c.name}</div>
-            <div class="creator-handle">${c.handle}</div>
+            <div class="card-name">${c.name}</div>
+            <div class="card-handle">${c.handle}</div>
           </div>
         </div>
-        <div class="spec-tag">✦ ${c.spec}</div>
-        <div class="creator-bio">${c.bio}</div>
+
+        <div class="card-spec">
+          <span class="card-spec-dot"></span>
+          ${c.spec}
+        </div>
+
+        <p class="card-bio">${c.bio}</p>
+
         <div class="card-footer">
-          <div>
-            <div class="card-stat-num">${c.videos}</div>
-            <div class="card-stat-lbl">סרטונים</div>
+          <div class="card-stats">
+            <div>
+              <div class="card-stat-num">${c.videos}</div>
+              <div class="card-stat-lbl">סרטונים</div>
+            </div>
+            <div class="card-divider"></div>
+            <div>
+              <div class="card-stat-num">${c.clients}</div>
+              <div class="card-stat-lbl">לקוחות</div>
+            </div>
+            <div class="card-divider"></div>
+            <div>
+              <div class="card-stat-num">⭐ ${c.rating}</div>
+              <div class="card-stat-lbl">דירוג</div>
+            </div>
           </div>
-          <div>
-            <div class="card-stat-num">${c.clients}</div>
-            <div class="card-stat-lbl">לקוחות</div>
-          </div>
-          <div>
-            <div class="card-stat-num">⭐ ${c.rating}</div>
-            <div class="card-stat-lbl">דירוג</div>
-          </div>
-          <div class="card-arrow">
+          <div class="card-cta">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
               <path d="M19 12H5M12 5l-7 7 7 7"/>
             </svg>
@@ -625,13 +816,12 @@ function renderCreators(filter = 'all') {
   `).join('');
 
   // Scroll reveal
-  document.querySelectorAll('.creator-card').forEach((el, i) => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(18px)';
-    el.style.transition = `opacity 0.5s ${i*0.07}s ease, transform 0.5s ${i*0.07}s ease, border-color 0.3s, box-shadow 0.3s`;
-    setTimeout(() => { el.style.opacity='1'; el.style.transform='translateY(0)'; }, 80 + i*70);
-  });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.creator-card').forEach(el => observer.observe(el));
 }
+
 renderCreators();
 
 document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -642,32 +832,44 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
-// Particles (subtle, on teal hero)
-const pc = document.getElementById('particles');
-const px = pc.getContext('2d');
-let PW, PH, pts;
-function resizePc() {
+// ── Hero Particles ───────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('hero-particles');
+  const ctx = canvas.getContext('2d');
   const hero = document.getElementById('hero');
-  PW = pc.width  = hero.offsetWidth;
-  PH = pc.height = hero.offsetHeight;
-}
-resizePc(); window.addEventListener('resize', resizePc);
-function mkPt() {
-  return { x:Math.random()*PW, y:Math.random()*PH,
-           r:Math.random()*1.5+0.3,
-           vx:(Math.random()-0.5)*0.2, vy:-Math.random()*0.3-0.05,
-           a:Math.random()*0.3+0.05 };
-}
-pts = Array.from({length:60}, mkPt);
-(function draw() {
-  px.clearRect(0,0,PW,PH);
-  for (const p of pts) {
-    px.beginPath(); px.arc(p.x,p.y,p.r,0,Math.PI*2);
-    px.fillStyle=`rgba(255,255,255,${p.a})`; px.fill();
-    p.x+=p.vx; p.y+=p.vy;
-    if(p.y<-5||p.x<-5||p.x>PW+5) Object.assign(p,mkPt(),{y:PH+5});
+  let W, H, pts;
+
+  function resize() {
+    W = canvas.width  = hero.offsetWidth;
+    H = canvas.height = hero.offsetHeight;
   }
-  requestAnimationFrame(draw);
+  resize();
+  window.addEventListener('resize', resize);
+
+  function mkPt() {
+    return {
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 1.2 + 0.2,
+      vx: (Math.random() - 0.5) * 0.18,
+      vy: -(Math.random() * 0.3 + 0.06),
+      a: Math.random() * 0.25 + 0.05
+    };
+  }
+  pts = Array.from({ length: 55 }, mkPt);
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    pts.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${p.a})`;
+      ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+      if (p.y < -4 || p.x < -4 || p.x > W + 4) Object.assign(p, mkPt(), { y: H + 4 });
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
 })();
 </script>
 </body>
