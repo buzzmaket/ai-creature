@@ -3,477 +3,592 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Creature — פלטפורמת יוצרי AI</title>
+  <title>AI Creature — פלטפורמת יוצרי AI | BuzzMarket</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:        #001820;
-      --surface:   #00263a;
       --teal:      #003E51;
-      --teal-mid:  #005f7a;
-      --accent:    #00c8a0;
-      --accent2:   #00a8cc;
-      --glow:      rgba(0,200,160,0.18);
-      --text:      #e8f8f5;
-      --muted:     #6ab5c4;
-      --border:    rgba(0,168,204,0.15);
-      --card-bg:   rgba(0,38,58,0.85);
-      --radius:    12px;
+      --teal-mid:  #005166;
+      --teal-light:#e8f4f7;
+      --gold:      #c8a84b;
+      --gold-light:#f5e6b8;
+      --white:     #ffffff;
+      --gray-bg:   #f4f6f7;
+      --gray-line: #dde6ea;
+      --text:      #1a2e36;
+      --muted:     #5a7a85;
+      --radius:    10px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Heebo', sans-serif;
-      background: var(--bg);
+      background: var(--white);
       color: var(--text);
-      min-height: 100vh;
       overflow-x: hidden;
-    }
-
-    /* ── Particles ── */
-    #particles {
-      position: fixed; inset: 0; z-index: 0;
-      pointer-events: none; opacity: 0.6;
     }
 
     /* ── Nav ── */
     nav {
       position: sticky; top: 0; z-index: 200;
-      background: rgba(0,24,32,0.92);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
+      background: var(--white);
+      border-bottom: 2px solid var(--teal);
       display: flex; align-items: center;
       justify-content: space-between;
-      padding: 0 60px; height: 68px;
+      padding: 0 60px; height: 70px;
+      box-shadow: 0 2px 12px rgba(0,62,81,0.08);
     }
     .logo {
-      font-size: 1.25rem; font-weight: 900;
-      letter-spacing: -0.02em;
-      display: flex; align-items: center; gap: 10px;
-      text-decoration: none; color: var(--text);
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
     }
-    .logo-icon {
-      width: 32px; height: 32px;
-      background: var(--accent);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
-      box-shadow: 0 0 16px rgba(0,200,160,0.5);
+    .logo-text {
+      font-size: 1.3rem; font-weight: 900;
+      color: var(--teal); letter-spacing: -0.01em;
     }
-    .logo span { color: var(--accent); }
-    .nav-links {
-      display: flex; gap: 32px; list-style: none;
+    .logo-text span { color: var(--gold); }
+    .logo-badge {
+      background: var(--teal);
+      color: var(--white);
+      font-size: 0.65rem; font-weight: 700;
+      padding: 3px 8px; border-radius: 4px;
+      letter-spacing: 0.05em;
     }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
     .nav-links a {
-      color: var(--muted); text-decoration: none;
-      font-size: 0.88rem; font-weight: 400;
+      color: var(--teal); text-decoration: none;
+      font-size: 0.9rem; font-weight: 500;
       transition: color 0.2s;
+      position: relative;
     }
-    .nav-links a:hover { color: var(--text); }
+    .nav-links a::after {
+      content: ''; position: absolute;
+      bottom: -4px; right: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
     .nav-cta {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 22px;
-      background: var(--accent);
-      color: #001820;
+      background: var(--gold);
+      color: var(--teal);
       font-family: 'Heebo', sans-serif;
       font-size: 0.88rem; font-weight: 700;
-      border: none; border-radius: 6px; cursor: pointer;
+      padding: 10px 24px; border: none;
+      border-radius: 6px; cursor: pointer;
       text-decoration: none;
-      transition: box-shadow 0.3s, transform 0.2s;
-      box-shadow: 0 0 16px rgba(0,200,160,0.3);
+      transition: background 0.2s, transform 0.2s;
     }
-    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 0 28px rgba(0,200,160,0.5); }
+    .nav-cta:hover { background: #b8942f; transform: translateY(-1px); }
 
     /* ── Hero ── */
     #hero {
-      position: relative; z-index: 1;
-      padding: 90px 60px 70px;
-      max-width: 1300px; margin: 0 auto;
-      display: flex; align-items: flex-end;
+      background: var(--teal);
+      padding: 80px 60px 70px;
+      position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: 'AI';
+      position: absolute;
+      left: -20px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 22rem; font-weight: 900;
+      color: rgba(255,255,255,0.04);
+      letter-spacing: -0.05em;
+      pointer-events: none; line-height: 1;
+    }
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center;
       justify-content: space-between; gap: 40px;
       flex-wrap: wrap;
     }
     .hero-left { max-width: 600px; }
-    .hero-tag {
+    .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(0,200,160,0.1);
-      border: 1px solid rgba(0,200,160,0.25);
-      border-radius: 100px;
-      padding: 6px 16px;
-      font-size: 0.78rem; font-weight: 500;
-      color: var(--accent); letter-spacing: 0.05em;
-      margin-bottom: 24px;
+      background: rgba(200,168,75,0.2);
+      border: 1px solid rgba(200,168,75,0.5);
+      border-radius: 4px; padding: 5px 14px;
+      font-size: 0.75rem; font-weight: 700;
+      color: var(--gold); letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 22px;
     }
-    .hero-tag::before {
-      content: ''; width: 6px; height: 6px;
-      background: var(--accent); border-radius: 50%;
-      box-shadow: 0 0 8px var(--accent);
-      animation: blink 2s infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
     h1 {
-      font-size: clamp(2.4rem, 4vw, 4rem);
-      font-weight: 900; line-height: 1.08;
-      letter-spacing: -0.03em;
-      margin-bottom: 18px;
+      font-size: clamp(2.2rem, 4vw, 3.6rem);
+      font-weight: 900; line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--white); margin-bottom: 18px;
     }
-    h1 em { font-style: normal; color: var(--accent); }
+    h1 em { font-style: normal; color: var(--gold); }
     .hero-sub {
-      font-size: 1.05rem; font-weight: 300;
-      color: var(--muted); line-height: 1.75;
-      max-width: 480px;
+      font-size: 1rem; font-weight: 300;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.8; max-width: 500px;
+      margin-bottom: 36px;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-gold {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--gold); color: var(--teal);
+      font-family: 'Heebo', sans-serif;
+      font-size: 0.95rem; font-weight: 700;
+      padding: 14px 30px; border-radius: 6px;
+      border: none; cursor: pointer; text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-gold:hover { background: #b8942f; transform: translateY(-2px); }
+    .btn-outline-white {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--white);
+      font-family: 'Heebo', sans-serif;
+      font-size: 0.9rem; font-weight: 500;
+      padding: 13px 26px; border-radius: 6px;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      cursor: pointer; text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-outline-white:hover {
+      border-color: var(--white);
+      background: rgba(255,255,255,0.08);
     }
     .hero-stats {
-      display: flex; gap: 40px;
-      align-self: flex-end;
+      display: flex; gap: 0;
+      align-self: center;
     }
+    .hero-stat {
+      padding: 20px 36px;
+      border-right: 1px solid rgba(255,255,255,0.15);
+      text-align: center;
+    }
+    .hero-stat:first-child { border-right: none; }
     .hero-stat-num {
-      font-size: 2.2rem; font-weight: 900;
-      color: var(--accent); letter-spacing: -0.03em;
-      line-height: 1;
+      font-size: 2.4rem; font-weight: 900;
+      color: var(--gold); line-height: 1;
     }
     .hero-stat-lbl {
-      font-size: 0.8rem; color: var(--muted);
+      font-size: 0.78rem; color: rgba(255,255,255,0.6);
       margin-top: 4px;
     }
 
+    /* ── Particles (subtle, teal bg) ── */
+    #particles {
+      position: absolute; inset: 0;
+      pointer-events: none; z-index: 0; opacity: 0.4;
+    }
+    .hero-inner { position: relative; z-index: 1; }
+
     /* ── Filter bar ── */
+    .filter-wrap {
+      background: var(--teal-light);
+      border-bottom: 1px solid var(--gray-line);
+    }
     .filter-bar {
-      position: relative; z-index: 1;
-      max-width: 1300px; margin: 0 auto;
-      padding: 0 60px 40px;
-      display: flex; align-items: center; gap: 12px;
+      max-width: 1200px; margin: 0 auto;
+      padding: 18px 60px;
+      display: flex; align-items: center; gap: 10px;
       flex-wrap: wrap;
     }
     .filter-label {
-      font-size: 0.8rem; color: var(--muted);
-      margin-left: 8px; letter-spacing: 0.05em;
+      font-size: 0.82rem; font-weight: 700;
+      color: var(--teal); margin-left: 10px;
     }
     .filter-btn {
-      padding: 8px 20px;
-      background: transparent;
-      border: 1px solid var(--border);
+      padding: 7px 18px;
+      background: var(--white);
+      border: 1.5px solid var(--gray-line);
       border-radius: 100px;
       color: var(--muted);
       font-family: 'Heebo', sans-serif;
-      font-size: 0.85rem; cursor: pointer;
-      transition: all 0.2s;
+      font-size: 0.82rem; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
     }
-    .filter-btn:hover, .filter-btn.active {
-      background: rgba(0,200,160,0.1);
-      border-color: var(--accent);
-      color: var(--accent);
+    .filter-btn:hover { border-color: var(--teal); color: var(--teal); }
+    .filter-btn.active {
+      background: var(--teal); border-color: var(--teal);
+      color: var(--white);
     }
 
-    /* ── Creators grid ── */
-    #creators {
-      position: relative; z-index: 1;
-      max-width: 1300px; margin: 0 auto;
-      padding: 0 60px 100px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
+    /* ── Creators section ── */
+    .creators-wrap {
+      max-width: 1200px; margin: 0 auto;
+      padding: 50px 60px 90px;
+    }
+    .section-header {
+      display: flex; align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 36px; flex-wrap: wrap; gap: 12px;
+    }
+    .section-header h2 {
+      font-size: 1.6rem; font-weight: 900;
+      color: var(--teal); letter-spacing: -0.02em;
+    }
+    .section-header h2::after {
+      content: ''; display: block;
+      width: 50px; height: 3px;
+      background: var(--gold); margin-top: 6px;
+    }
+    .count-badge {
+      font-size: 0.82rem; color: var(--muted); font-weight: 400;
     }
 
     /* ── Creator card ── */
+    #creators {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 24px;
+    }
     .creator-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
+      background: var(--white);
+      border: 1.5px solid var(--gray-line);
       border-radius: var(--radius);
       overflow: hidden;
       text-decoration: none; color: inherit;
       display: flex; flex-direction: column;
       transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-      cursor: pointer;
     }
     .creator-card:hover {
       transform: translateY(-6px);
-      border-color: rgba(0,200,160,0.4);
-      box-shadow: 0 16px 48px rgba(0,0,0,0.4), 0 0 24px rgba(0,200,160,0.1);
+      border-color: var(--teal);
+      box-shadow: 0 12px 36px rgba(0,62,81,0.13);
     }
     .card-thumbs {
       display: grid;
       grid-template-columns: 2fr 1fr;
       grid-template-rows: 1fr 1fr;
-      height: 200px; gap: 2px;
-      background: var(--bg);
+      height: 190px; gap: 2px;
+      background: var(--gray-line);
     }
     .card-thumb {
-      background: var(--teal);
-      overflow: hidden;
-      position: relative;
+      overflow: hidden; position: relative;
+      background: var(--teal-light);
+      display: flex; align-items: center;
+      justify-content: center;
     }
     .card-thumb:first-child { grid-row: 1 / 3; }
     .card-thumb img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
+      width: 100%; height: 100%; object-fit: cover;
       transition: transform 0.4s;
     }
     .creator-card:hover .card-thumb img { transform: scale(1.05); }
     .thumb-placeholder {
       width: 100%; height: 100%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem;
+      font-size: 2rem;
     }
     .play-icon {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
-      background: rgba(0,0,0,0.3);
+      background: rgba(0,62,81,0.4);
       opacity: 0; transition: opacity 0.3s;
     }
     .creator-card:hover .play-icon { opacity: 1; }
-    .play-icon svg { filter: drop-shadow(0 0 8px rgba(0,200,160,0.8)); }
-
-    .card-body { padding: 20px 22px 22px; flex: 1; }
-    .card-header {
-      display: flex; align-items: center; gap: 14px;
-      margin-bottom: 14px;
-    }
-    .avatar {
-      width: 46px; height: 46px; min-width: 46px;
-      border-radius: 50%;
-      background: var(--teal-mid);
-      border: 2px solid rgba(0,200,160,0.3);
+    .play-circle {
+      width: 44px; height: 44px;
+      background: var(--gold); border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; font-weight: 700;
-      color: var(--accent);
-      overflow: hidden;
     }
-    .avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .creator-name {
-      font-size: 1rem; font-weight: 700;
-      margin-bottom: 2px;
-    }
-    .creator-handle {
-      font-size: 0.78rem; color: var(--muted);
-    }
-    .creator-spec {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(0,200,160,0.08);
-      border: 1px solid rgba(0,200,160,0.18);
-      border-radius: 100px; padding: 3px 12px;
-      font-size: 0.75rem; color: var(--accent);
+
+    .card-body { padding: 18px 20px 20px; flex: 1; }
+    .card-header {
+      display: flex; align-items: center; gap: 12px;
       margin-bottom: 12px;
     }
+    .avatar {
+      width: 44px; height: 44px; min-width: 44px;
+      border-radius: 50%;
+      background: var(--teal);
+      border: 2px solid var(--gold-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; overflow: hidden;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .creator-name { font-size: 1rem; font-weight: 700; color: var(--teal); }
+    .creator-handle { font-size: 0.75rem; color: var(--muted); }
+    .spec-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--teal-light);
+      border: 1px solid rgba(0,62,81,0.15);
+      border-radius: 4px; padding: 3px 10px;
+      font-size: 0.72rem; font-weight: 700;
+      color: var(--teal); margin-bottom: 10px;
+    }
     .creator-bio {
-      font-size: 0.85rem; color: var(--muted);
+      font-size: 0.84rem; color: var(--muted);
       line-height: 1.65; margin-bottom: 16px;
     }
     .card-footer {
       display: flex; justify-content: space-between;
-      align-items: center;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
+      align-items: center; padding-top: 14px;
+      border-top: 1px solid var(--gray-line);
     }
-    .card-stat {
-      text-align: center;
-    }
-    .card-stat-num {
-      font-size: 1.1rem; font-weight: 700;
-      color: var(--text); line-height: 1;
-    }
-    .card-stat-lbl {
-      font-size: 0.72rem; color: var(--muted);
-      margin-top: 2px;
-    }
+    .card-stat-num { font-size: 1.05rem; font-weight: 700; color: var(--teal); line-height: 1; }
+    .card-stat-lbl { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
     .card-arrow {
       width: 34px; height: 34px;
-      background: rgba(0,200,160,0.1);
-      border: 1px solid rgba(0,200,160,0.2);
+      background: var(--teal-light);
+      border: 1px solid var(--gray-line);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      transition: background 0.3s, transform 0.3s;
-      color: var(--accent);
+      color: var(--teal);
+      transition: background 0.3s, color 0.3s, transform 0.3s;
     }
     .creator-card:hover .card-arrow {
-      background: var(--accent);
-      color: #001820;
+      background: var(--gold); color: var(--teal);
       transform: translateX(-3px);
+    }
+
+    /* ── About strip ── */
+    #about {
+      background: var(--teal);
+      padding: 70px 60px;
+    }
+    .about-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 60px;
+      flex-wrap: wrap;
+    }
+    .about-text { max-width: 540px; }
+    .about-eyebrow {
+      font-size: 0.75rem; font-weight: 700;
+      color: var(--gold); letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 16px;
+    }
+    #about h2 {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 900; color: var(--white);
+      letter-spacing: -0.02em; margin-bottom: 18px;
+      line-height: 1.15;
+    }
+    #about h2 em { font-style: normal; color: var(--gold); }
+    #about p {
+      font-size: 0.95rem; color: rgba(255,255,255,0.72);
+      line-height: 1.8;
+    }
+    .about-features {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 20px; min-width: 320px;
+    }
+    .feat-box {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius);
+      padding: 22px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .feat-box:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(200,168,75,0.4);
+    }
+    .feat-icon {
+      font-size: 1.6rem; margin-bottom: 10px;
+    }
+    .feat-title {
+      font-size: 0.9rem; font-weight: 700;
+      color: var(--white); margin-bottom: 4px;
+    }
+    .feat-desc {
+      font-size: 0.78rem; color: rgba(255,255,255,0.55);
+      line-height: 1.6;
     }
 
     /* ── Footer ── */
     footer {
-      position: relative; z-index: 1;
-      border-top: 1px solid var(--border);
+      background: #001e2a;
       padding: 36px 60px;
       display: flex; justify-content: space-between;
-      align-items: center;
-      color: var(--muted); font-size: 0.82rem;
-      flex-wrap: wrap; gap: 16px;
+      align-items: center; flex-wrap: wrap; gap: 16px;
     }
-    footer a { color: var(--accent); text-decoration: none; }
+    footer .logo-text { color: var(--white); font-size: 1.1rem; }
+    footer p { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+    footer a { color: var(--gold); text-decoration: none; }
 
     /* ── Responsive ── */
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       nav { padding: 0 20px; }
       .nav-links { display: none; }
-      #hero { padding: 60px 20px 40px; }
-      .filter-bar { padding: 0 20px 30px; }
-      #creators { padding: 0 20px 60px; grid-template-columns: 1fr; }
+      #hero { padding: 60px 20px 50px; }
+      .filter-bar { padding: 14px 20px; }
+      .creators-wrap { padding: 36px 20px 60px; }
+      #about { padding: 50px 20px; }
+      .about-features { grid-template-columns: 1fr; }
       footer { padding: 28px 20px; flex-direction: column; text-align: center; }
-      .hero-stats { gap: 24px; }
+      .hero-stats { gap: 0; }
+      .hero-stat { padding: 16px 20px; }
     }
   </style>
 </head>
 <body>
 
-<canvas id="particles"></canvas>
+<!-- Particles canvas (inside hero) -->
 
 <nav>
   <a href="index.html" class="logo">
-    <div class="logo-icon">✦</div>
-    AI <span>Creature</span>
+    <div class="logo-text">BUZZ MARKET <span>AI</span></div>
+    <div class="logo-badge">CREATORS</div>
   </a>
   <ul class="nav-links">
-    <li><a href="#creators">יוצרים</a></li>
+    <li><a href="#creators-section">יוצרים</a></li>
     <li><a href="#about">אודות</a></li>
-    <li><a href="mailto:hello@buzzmarket.co.il">צור קשר</a></li>
+    <li><a href="https://www.buzzmarket.co.il" target="_blank">BuzzMarket</a></li>
   </ul>
   <a href="mailto:hello@buzzmarket.co.il" class="nav-cta">הצטרף כיוצר</a>
 </nav>
 
 <section id="hero">
-  <div class="hero-left">
-    <div class="hero-tag">פלטפורמת יצירת תוכן AI</div>
-    <h1>יוצרי AI.<br>תוכן <em>שמדבר</em> ללקוחות.</h1>
-    <p class="hero-sub">
-      הפלטפורמה שמחברת בין יוצרי וידאו ואנימציה מבוססי AI לבין עסקים שרוצים תוכן שמייצר תוצאות. מבית BuzzMarket.
-    </p>
-  </div>
-  <div class="hero-stats">
-    <div>
-      <div class="hero-stat-num">24+</div>
-      <div class="hero-stat-lbl">יוצרים פעילים</div>
+  <canvas id="particles"></canvas>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">✦ פלטפורמת יוצרי AI</div>
+      <h1>יוצרי AI.<br>תוכן שמייצר <em>תוצאות.</em></h1>
+      <p class="hero-sub">
+        הפלטפורמה שמחברת בין יוצרי וידאו ואנימציה מבוססי AI לבין עסקים שצריכים תוכן שעובד. מבית BuzzMarket.
+      </p>
+      <div class="hero-btns">
+        <a href="#creators-section" class="btn-gold">גלה את היוצרים</a>
+        <a href="mailto:hello@buzzmarket.co.il" class="btn-outline-white">הצטרף כיוצר</a>
+      </div>
     </div>
-    <div>
-      <div class="hero-stat-num">500+</div>
-      <div class="hero-stat-lbl">סרטונים שנוצרו</div>
-    </div>
-    <div>
-      <div class="hero-stat-num">100%</div>
-      <div class="hero-stat-lbl">מבוסס AI</div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">24+</div>
+        <div class="hero-stat-lbl">יוצרים פעילים</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">500+</div>
+        <div class="hero-stat-lbl">סרטונים שנוצרו</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-lbl">מבוסס AI</div>
+      </div>
     </div>
   </div>
 </section>
 
-<div class="filter-bar">
-  <span class="filter-label">סינון:</span>
-  <button class="filter-btn active" data-filter="all">הכל</button>
-  <button class="filter-btn" data-filter="video">וידאו</button>
-  <button class="filter-btn" data-filter="animation">אנימציה</button>
-  <button class="filter-btn" data-filter="motion">מושן גרפיקס</button>
-  <button class="filter-btn" data-filter="avatar">אווטאר AI</button>
+<div class="filter-wrap">
+  <div class="filter-bar">
+    <span class="filter-label">סינון לפי:</span>
+    <button class="filter-btn active" data-filter="all">הכל</button>
+    <button class="filter-btn" data-filter="video">וידאו</button>
+    <button class="filter-btn" data-filter="animation">אנימציה</button>
+    <button class="filter-btn" data-filter="motion">מושן גרפיקס</button>
+    <button class="filter-btn" data-filter="avatar">אווטאר AI</button>
+  </div>
 </div>
 
-<div id="creators"></div>
+<div class="creators-wrap" id="creators-section">
+  <div class="section-header">
+    <h2>היוצרים שלנו</h2>
+    <span class="count-badge" id="count-label">מציג 6 יוצרים</span>
+  </div>
+  <div id="creators"></div>
+</div>
 
-<footer id="about">
-  <div>© 2025 AI Creature · מבית <a href="https://www.buzzmarket.co.il" target="_blank">BuzzMarket</a></div>
-  <div>פלטפורמה לקריאייטיב מבוסס בינה מלאכותית</div>
+<section id="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <div class="about-eyebrow">מי אנחנו</div>
+      <h2>תוכן AI שמדבר<br><em>ללקוחות שלך</em></h2>
+      <p>
+        באזמרקט מחברת בין עסקים לבין יוצרי תוכן AI מהטובים בישראל. כל יוצר הוא מומחה בסגנון שלו — ביחד הם מספקים מגוון רחב של פתרונות וידאו ואנימציה, מהיר ובמחיר נגיש.
+      </p>
+    </div>
+    <div class="about-features">
+      <div class="feat-box">
+        <div class="feat-icon">⚡</div>
+        <div class="feat-title">מהירות</div>
+        <div class="feat-desc">סרטון מוכן תוך ימים ספורים</div>
+      </div>
+      <div class="feat-box">
+        <div class="feat-icon">🎯</div>
+        <div class="feat-title">מדידה</div>
+        <div class="feat-desc">תוכן שמתוכנן להמיר לקוחות</div>
+      </div>
+      <div class="feat-box">
+        <div class="feat-icon">🤝</div>
+        <div class="feat-title">מקצועיות</div>
+        <div class="feat-desc">יוצרים מנוסים עם תיק עבודות</div>
+      </div>
+      <div class="feat-box">
+        <div class="feat-icon">💡</div>
+        <div class="feat-title">חדשנות</div>
+        <div class="feat-desc">טכנולוגיית AI מהחדשה ביותר</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo-text" style="font-family:'Heebo',sans-serif;font-weight:900;">
+    BUZZ MARKET <span style="color:var(--gold)">AI</span>
+  </div>
+  <p>© 2025 כל הזכויות שמורות · <a href="https://www.buzzmarket.co.il" target="_blank">buzzmarket.co.il</a></p>
 </footer>
 
 <script>
-// ── Data ──────────────────────────────────────────────────────────
 const creators = [
   {
-    id: "noa-levi",
-    name: "נועה לוי",
-    handle: "@noa.creates",
-    spec: "אנימציה",
-    tag: "animation",
+    id: "noa-levi", name: "נועה לוי", handle: "@noa.creates",
+    spec: "אנימציה", tag: "animation", emoji: "🎨",
     bio: "מתמחה באנימציות מוצר ובסרטוני סטוריטלינג. יוצרת עולמות ויזואליים שמחברים בין מותג לרגש.",
-    videos: 18, clients: 12, rating: 4.9,
-    color: "#00263a",
-    emoji: "🎨",
-    thumbs: ["🎬", "✨", "🌊"]
+    videos: 18, clients: 12, rating: "4.9", thumbs: ["🎬","✨","🌊"]
   },
   {
-    id: "yoav-cohen",
-    name: "יואב כהן",
-    handle: "@yoav.motion",
-    spec: "מושן גרפיקס",
-    tag: "motion",
+    id: "yoav-cohen", name: "יואב כהן", handle: "@yoav.motion",
+    spec: "מושן גרפיקס", tag: "motion", emoji: "⚡",
     bio: "מושן גרפיקס ברמה גבוהה לפרסומות דיגיטליות, ריילז ותוכן מותגי. מהיר, מדויק, מרשים.",
-    videos: 34, clients: 21, rating: 5.0,
-    color: "#001e2e",
-    emoji: "⚡",
-    thumbs: ["📱", "🎯", "💎"]
+    videos: 34, clients: 21, rating: "5.0", thumbs: ["📱","🎯","💎"]
   },
   {
-    id: "maya-shapira",
-    name: "מאיה שפירא",
-    handle: "@maya.ai",
-    spec: "אווטאר AI",
-    tag: "avatar",
-    bio: "יוצרת דמויות AI ריאליסטיות לסרטוני הסבר, פרזנטציות ומודעות פרסום. פנים לכל מותג.",
-    videos: 22, clients: 15, rating: 4.8,
-    color: "#00243a",
-    emoji: "🤖",
-    thumbs: ["👤", "🎤", "📺"]
+    id: "maya-shapira", name: "מאיה שפירא", handle: "@maya.ai",
+    spec: "אווטאר AI", tag: "avatar", emoji: "🤖",
+    bio: "יוצרת דמויות AI ריאליסטיות לסרטוני הסבר, פרזנטציות ומודעות פרסום.",
+    videos: 22, clients: 15, rating: "4.8", thumbs: ["👤","🎤","📺"]
   },
   {
-    id: "dan-mizrahi",
-    name: "דן מזרחי",
-    handle: "@dan.video",
-    spec: "וידאו AI",
-    tag: "video",
+    id: "dan-mizrahi", name: "דן מזרחי", handle: "@dan.video",
+    spec: "וידאו AI", tag: "video", emoji: "🎥",
     bio: "מתמחה בהפקת וידאו מלא מבוסס AI — מסקריפט ועד עריכה סופית. מהיר וחסכוני.",
-    videos: 41, clients: 28, rating: 4.9,
-    color: "#002030",
-    emoji: "🎥",
-    thumbs: ["🏙️", "🚀", "🎵"]
+    videos: 41, clients: 28, rating: "4.9", thumbs: ["🏙️","🚀","🎵"]
   },
   {
-    id: "shir-ben-david",
-    name: "שיר בן דוד",
-    handle: "@shir.creates",
-    spec: "אנימציה",
-    tag: "animation",
+    id: "shir-ben-david", name: "שיר בן דוד", handle: "@shir.creates",
+    spec: "אנימציה", tag: "animation", emoji: "🌟",
     bio: "אנימציות 2D ו-3D לעסקים קטנים ובינוניים. מחיר נגיש, תוצאה פרמיום.",
-    videos: 15, clients: 10, rating: 4.7,
-    color: "#001a28",
-    emoji: "🌟",
-    thumbs: ["🦋", "💫", "🌈"]
+    videos: 15, clients: 10, rating: "4.7", thumbs: ["🦋","💫","🌈"]
   },
   {
-    id: "oren-katz",
-    name: "אורן כץ",
-    handle: "@oren.motion",
-    spec: "מושן גרפיקס",
-    tag: "motion",
+    id: "oren-katz", name: "אורן כץ", handle: "@oren.motion",
+    spec: "מושן גרפיקס", tag: "motion", emoji: "🎯",
     bio: "גרפיקה עיצובית בתנועה — מספר את הסיפור של המותג שלך בפחות מ-30 שניות.",
-    videos: 29, clients: 19, rating: 4.9,
-    color: "#002535",
-    emoji: "🎯",
-    thumbs: ["📊", "🔮", "⚙️"]
+    videos: 29, clients: 19, rating: "4.9", thumbs: ["📊","🔮","⚙️"]
   },
 ];
 
-// ── Render ─────────────────────────────────────────────────────────
 function renderCreators(filter = 'all') {
   const grid = document.getElementById('creators');
   const list = filter === 'all' ? creators : creators.filter(c => c.tag === filter);
+  document.getElementById('count-label').textContent = `מציג ${list.length} יוצרים`;
   grid.innerHTML = list.map(c => `
-    <a class="creator-card" href="creator.html?id=${c.id}" data-tag="${c.tag}">
+    <a class="creator-card" href="creator.html?id=${c.id}">
       <div class="card-thumbs">
         <div class="card-thumb">
-          <div class="thumb-placeholder" style="background:${c.color};font-size:2.5rem">${c.thumbs[0]}</div>
+          <div class="thumb-placeholder" style="background:var(--teal-light);font-size:2.8rem">${c.thumbs[0]}</div>
           <div class="play-icon">
-            <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" stroke="#00c8a0" stroke-width="1.5"/>
-              <polygon points="10,8 17,12 10,16" fill="#00c8a0"/>
-            </svg>
+            <div class="play-circle">
+              <svg width="18" height="18" fill="var(--teal)" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>
+            </div>
           </div>
         </div>
         <div class="card-thumb">
-          <div class="thumb-placeholder" style="background:${c.color};font-size:1.8rem">${c.thumbs[1]}</div>
+          <div class="thumb-placeholder" style="background:var(--teal-light);font-size:2rem">${c.thumbs[1]}</div>
         </div>
         <div class="card-thumb">
-          <div class="thumb-placeholder" style="background:${c.color};font-size:1.8rem">${c.thumbs[2]}</div>
+          <div class="thumb-placeholder" style="background:var(--teal-light);font-size:2rem">${c.thumbs[2]}</div>
         </div>
       </div>
       <div class="card-body">
@@ -484,23 +599,23 @@ function renderCreators(filter = 'all') {
             <div class="creator-handle">${c.handle}</div>
           </div>
         </div>
-        <div class="creator-spec">✦ ${c.spec}</div>
+        <div class="spec-tag">✦ ${c.spec}</div>
         <div class="creator-bio">${c.bio}</div>
         <div class="card-footer">
-          <div class="card-stat">
+          <div>
             <div class="card-stat-num">${c.videos}</div>
             <div class="card-stat-lbl">סרטונים</div>
           </div>
-          <div class="card-stat">
+          <div>
             <div class="card-stat-num">${c.clients}</div>
             <div class="card-stat-lbl">לקוחות</div>
           </div>
-          <div class="card-stat">
+          <div>
             <div class="card-stat-num">⭐ ${c.rating}</div>
             <div class="card-stat-lbl">דירוג</div>
           </div>
           <div class="card-arrow">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
               <path d="M19 12H5M12 5l-7 7 7 7"/>
             </svg>
           </div>
@@ -508,11 +623,17 @@ function renderCreators(filter = 'all') {
       </div>
     </a>
   `).join('');
-}
 
+  // Scroll reveal
+  document.querySelectorAll('.creator-card').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    el.style.transition = `opacity 0.5s ${i*0.07}s ease, transform 0.5s ${i*0.07}s ease, border-color 0.3s, box-shadow 0.3s`;
+    setTimeout(() => { el.style.opacity='1'; el.style.transform='translateY(0)'; }, 80 + i*70);
+  });
+}
 renderCreators();
 
-// Filter
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -521,50 +642,33 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
-// ── Particles ──────────────────────────────────────────────────────
+// Particles (subtle, on teal hero)
 const pc = document.getElementById('particles');
 const px = pc.getContext('2d');
 let PW, PH, pts;
-
-function resizePc() { PW = pc.width = window.innerWidth; PH = pc.height = window.innerHeight; }
-resizePc();
-window.addEventListener('resize', resizePc);
-
-function mkPt() {
-  return { x: Math.random()*PW, y: Math.random()*PH,
-           r: Math.random()*1.5+0.3,
-           vx: (Math.random()-0.5)*0.25, vy: -Math.random()*0.4-0.1,
-           a: Math.random()*0.4+0.1 };
+function resizePc() {
+  const hero = document.getElementById('hero');
+  PW = pc.width  = hero.offsetWidth;
+  PH = pc.height = hero.offsetHeight;
 }
-pts = Array.from({length:80}, mkPt);
-
-(function drawPc() {
+resizePc(); window.addEventListener('resize', resizePc);
+function mkPt() {
+  return { x:Math.random()*PW, y:Math.random()*PH,
+           r:Math.random()*1.5+0.3,
+           vx:(Math.random()-0.5)*0.2, vy:-Math.random()*0.3-0.05,
+           a:Math.random()*0.3+0.05 };
+}
+pts = Array.from({length:60}, mkPt);
+(function draw() {
   px.clearRect(0,0,PW,PH);
   for (const p of pts) {
-    px.beginPath(); px.arc(p.x, p.y, p.r, 0, Math.PI*2);
-    px.fillStyle = `rgba(0,200,160,${p.a})`; px.fill();
-    p.x += p.vx; p.y += p.vy;
-    if (p.y < -5 || p.x < -5 || p.x > PW+5) Object.assign(p, mkPt(), {y: PH+5});
+    px.beginPath(); px.arc(p.x,p.y,p.r,0,Math.PI*2);
+    px.fillStyle=`rgba(255,255,255,${p.a})`; px.fill();
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.y<-5||p.x<-5||p.x>PW+5) Object.assign(p,mkPt(),{y:PH+5});
   }
-  requestAnimationFrame(drawPc);
+  requestAnimationFrame(draw);
 })();
-
-// ── Scroll reveal ──────────────────────────────────────────────────
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.opacity = '1';
-      e.target.style.transform = 'translateY(0)';
-    }
-  });
-}, {threshold: 0.1});
-
-document.querySelectorAll('.creator-card').forEach((el, i) => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(20px)';
-  el.style.transition = `opacity 0.5s ${i * 0.07}s ease, transform 0.5s ${i * 0.07}s ease, border-color 0.3s, box-shadow 0.3s`;
-  obs.observe(el);
-});
 </script>
 </body>
 </html>
