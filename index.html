@@ -3,839 +3,568 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Creature — היצור שחושב בשבילך</title>
+  <title>AI Creature — פלטפורמת יוצרי AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --teal-deep:   #001e2a;
-      --teal-base:   #003E51;
-      --teal-mid:    #005f7a;
-      --teal-bright: #00a8cc;
-      --cyan-glow:   #00ffe0;
-      --cyan-soft:   #80fff0;
-      --white:       #f0fffe;
-      --text-muted:  #7ecfdf;
+      --bg:        #001820;
+      --surface:   #00263a;
+      --teal:      #003E51;
+      --teal-mid:  #005f7a;
+      --accent:    #00c8a0;
+      --accent2:   #00a8cc;
+      --glow:      rgba(0,200,160,0.18);
+      --text:      #e8f8f5;
+      --muted:     #6ab5c4;
+      --border:    rgba(0,168,204,0.15);
+      --card-bg:   rgba(0,38,58,0.85);
+      --radius:    12px;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
-
     body {
       font-family: 'Heebo', sans-serif;
-      background: var(--teal-deep);
-      color: var(--white);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
       overflow-x: hidden;
-      cursor: none;
     }
 
-    /* ── Custom cursor ── */
-    #cursor {
-      position: fixed;
-      width: 12px; height: 12px;
-      background: var(--cyan-glow);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: transform 0.05s, width 0.3s, height 0.3s, opacity 0.3s;
-      box-shadow: 0 0 16px 4px var(--cyan-glow);
-      mix-blend-mode: screen;
-    }
-    #cursor-ring {
-      position: fixed;
-      width: 40px; height: 40px;
-      border: 1.5px solid rgba(0,255,224,0.5);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: transform 0.18s ease, width 0.3s, height 0.3s;
-    }
-
-    /* ── Particle canvas ── */
+    /* ── Particles ── */
     #particles {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none; opacity: 0.6;
     }
 
     /* ── Nav ── */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(0,24,32,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
       justify-content: space-between;
-      padding: 24px 60px;
-      background: linear-gradient(to bottom, rgba(0,30,42,0.95), transparent);
+      padding: 0 60px; height: 68px;
     }
     .logo {
-      font-size: 1.3rem;
-      font-weight: 900;
+      font-size: 1.25rem; font-weight: 900;
       letter-spacing: -0.02em;
-      color: var(--cyan-glow);
-      text-shadow: 0 0 20px var(--cyan-glow);
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text);
     }
-    .logo span { color: var(--white); }
-    nav ul {
-      display: flex;
-      gap: 36px;
-      list-style: none;
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 0 16px rgba(0,200,160,0.5);
     }
-    nav ul a {
-      color: var(--text-muted);
+    .logo span { color: var(--accent); }
+    .nav-links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.88rem; font-weight: 400;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px;
+      background: var(--accent);
+      color: #001820;
+      font-family: 'Heebo', sans-serif;
+      font-size: 0.88rem; font-weight: 700;
+      border: none; border-radius: 6px; cursor: pointer;
       text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 400;
-      letter-spacing: 0.05em;
-      transition: color 0.3s;
+      transition: box-shadow 0.3s, transform 0.2s;
+      box-shadow: 0 0 16px rgba(0,200,160,0.3);
     }
-    nav ul a:hover { color: var(--cyan-glow); }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 0 28px rgba(0,200,160,0.5); }
 
     /* ── Hero ── */
     #hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-    }
-    .hero-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 60px;
-      max-width: 1200px;
-      width: 90%;
-      margin: 0 auto;
-      padding-top: 80px;
-    }
-    .hero-text { position: relative; }
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.78rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--cyan-glow);
-      margin-bottom: 28px;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.2s forwards;
-    }
-    .hero-eyebrow::before {
-      content: '';
-      display: block;
-      width: 32px; height: 1px;
-      background: var(--cyan-glow);
-      box-shadow: 0 0 8px var(--cyan-glow);
-    }
-    h1 {
-      font-size: clamp(2.8rem, 5.5vw, 5rem);
-      font-weight: 900;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      margin-bottom: 24px;
-      opacity: 0;
-      animation: fadeUp 0.9s 0.4s forwards;
-    }
-    h1 .accent {
-      color: var(--cyan-glow);
-      text-shadow: 0 0 30px rgba(0,255,224,0.5);
-      display: block;
-    }
-    .hero-sub {
-      font-size: 1.15rem;
-      font-weight: 300;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin-bottom: 44px;
-      max-width: 440px;
-      opacity: 0;
-      animation: fadeUp 0.9s 0.6s forwards;
-    }
-    .cta-row {
-      display: flex;
-      gap: 16px;
-      align-items: center;
+      position: relative; z-index: 1;
+      padding: 90px 60px 70px;
+      max-width: 1300px; margin: 0 auto;
+      display: flex; align-items: flex-end;
+      justify-content: space-between; gap: 40px;
       flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.9s 0.8s forwards;
     }
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 16px 36px;
-      background: var(--cyan-glow);
-      color: var(--teal-deep);
-      font-family: 'Heebo', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      text-decoration: none;
-      position: relative;
-      overflow: hidden;
-      transition: box-shadow 0.3s, transform 0.2s;
-      box-shadow: 0 0 24px rgba(0,255,224,0.4);
+    .hero-left { max-width: 600px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,200,160,0.1);
+      border: 1px solid rgba(0,200,160,0.25);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 0.78rem; font-weight: 500;
+      color: var(--accent); letter-spacing: 0.05em;
+      margin-bottom: 24px;
     }
-    .btn-primary::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
-      transform: translateX(100%);
-      transition: transform 0.4s;
+    .hero-tag::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--accent); border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent);
+      animation: blink 2s infinite;
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(0,255,224,0.7); }
-    .btn-primary:hover::after { transform: translateX(-100%); }
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-    .btn-secondary:hover { color: var(--white); }
-    .btn-secondary svg { transition: transform 0.3s; }
-    .btn-secondary:hover svg { transform: translateX(-4px); }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-    /* ── Creature canvas ── */
-    .hero-creature {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      animation: fadeIn 1.2s 0.5s forwards;
-    }
-    #creatureCanvas {
-      width: 500px;
-      height: 500px;
-      max-width: 100%;
-      filter: drop-shadow(0 0 40px rgba(0,255,224,0.2));
-    }
-
-    /* ── Stats bar ── */
-    .stats-bar {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      border-top: 1px solid rgba(0,168,204,0.15);
-      border-bottom: 1px solid rgba(0,168,204,0.15);
-    }
-    .stat-item {
-      flex: 1;
-      max-width: 260px;
-      padding: 36px 40px;
-      text-align: center;
-      border-right: 1px solid rgba(0,168,204,0.15);
-      position: relative;
-      overflow: hidden;
-    }
-    .stat-item:first-child { border-left: 1px solid rgba(0,168,204,0.15); }
-    .stat-item::before {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 0; height: 2px;
-      background: var(--cyan-glow);
-      box-shadow: 0 0 12px var(--cyan-glow);
-      transition: width 0.6s ease;
-    }
-    .stat-item:hover::before { width: 100%; }
-    .stat-number {
-      font-size: 2.6rem;
-      font-weight: 900;
-      color: var(--cyan-glow);
+    h1 {
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      font-weight: 900; line-height: 1.08;
       letter-spacing: -0.03em;
+      margin-bottom: 18px;
+    }
+    h1 em { font-style: normal; color: var(--accent); }
+    .hero-sub {
+      font-size: 1.05rem; font-weight: 300;
+      color: var(--muted); line-height: 1.75;
+      max-width: 480px;
+    }
+    .hero-stats {
+      display: flex; gap: 40px;
+      align-self: flex-end;
+    }
+    .hero-stat-num {
+      font-size: 2.2rem; font-weight: 900;
+      color: var(--accent); letter-spacing: -0.03em;
       line-height: 1;
     }
-    .stat-label {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      margin-top: 6px;
-      letter-spacing: 0.05em;
+    .hero-stat-lbl {
+      font-size: 0.8rem; color: var(--muted);
+      margin-top: 4px;
     }
 
-    /* ── About ── */
-    #about {
-      position: relative;
-      z-index: 1;
-      padding: 140px 60px;
-      max-width: 1200px;
-      margin: 0 auto;
+    /* ── Filter bar ── */
+    .filter-bar {
+      position: relative; z-index: 1;
+      max-width: 1300px; margin: 0 auto;
+      padding: 0 60px 40px;
+      display: flex; align-items: center; gap: 12px;
+      flex-wrap: wrap;
     }
-    .section-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--cyan-glow);
-      margin-bottom: 20px;
+    .filter-label {
+      font-size: 0.8rem; color: var(--muted);
+      margin-left: 8px; letter-spacing: 0.05em;
     }
-    .about-grid {
+    .filter-btn {
+      padding: 8px 20px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--muted);
+      font-family: 'Heebo', sans-serif;
+      font-size: 0.85rem; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: rgba(0,200,160,0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── Creators grid ── */
+    #creators {
+      position: relative; z-index: 1;
+      max-width: 1300px; margin: 0 auto;
+      padding: 0 60px 100px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-      margin-top: 60px;
-    }
-    h2 {
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-    h2 em {
-      font-style: normal;
-      color: var(--cyan-glow);
-    }
-    .about-body {
-      color: var(--text-muted);
-      font-size: 1rem;
-      line-height: 1.9;
-      font-weight: 300;
-    }
-    .about-body p + p { margin-top: 20px; }
-    .feature-list {
-      margin-top: 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .feature-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 20px;
-      padding: 24px;
-      background: rgba(0,95,122,0.1);
-      border: 1px solid rgba(0,168,204,0.12);
-      border-radius: 8px;
-      transition: border-color 0.3s, background 0.3s;
-    }
-    .feature-item:hover {
-      border-color: rgba(0,255,224,0.3);
-      background: rgba(0,95,122,0.2);
-    }
-    .feature-icon {
-      width: 42px; height: 42px;
-      min-width: 42px;
-      background: rgba(0,255,224,0.08);
-      border: 1px solid rgba(0,255,224,0.2);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-    }
-    .feature-title {
-      font-weight: 700;
-      font-size: 0.95rem;
-      margin-bottom: 4px;
-      color: var(--white);
-    }
-    .feature-desc {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.6;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
     }
 
-    /* ── CTA Section ── */
-    #cta {
+    /* ── Creator card ── */
+    .creator-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .creator-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0,200,160,0.4);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.4), 0 0 24px rgba(0,200,160,0.1);
+    }
+    .card-thumbs {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      height: 200px; gap: 2px;
+      background: var(--bg);
+    }
+    .card-thumb {
+      background: var(--teal);
+      overflow: hidden;
       position: relative;
-      z-index: 1;
-      padding: 120px 60px;
-      text-align: center;
+    }
+    .card-thumb:first-child { grid-row: 1 / 3; }
+    .card-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s;
+    }
+    .creator-card:hover .card-thumb img { transform: scale(1.05); }
+    .thumb-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+    }
+    .play-icon {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.3);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .creator-card:hover .play-icon { opacity: 1; }
+    .play-icon svg { filter: drop-shadow(0 0 8px rgba(0,200,160,0.8)); }
+
+    .card-body { padding: 20px 22px 22px; flex: 1; }
+    .card-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 14px;
+    }
+    .avatar {
+      width: 46px; height: 46px; min-width: 46px;
+      border-radius: 50%;
+      background: var(--teal-mid);
+      border: 2px solid rgba(0,200,160,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--accent);
       overflow: hidden;
     }
-    .cta-bg {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,95,122,0.35) 0%, transparent 70%);
-      pointer-events: none;
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .creator-name {
+      font-size: 1rem; font-weight: 700;
+      margin-bottom: 2px;
     }
-    .cta-border {
-      position: relative;
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 80px 60px;
-      border: 1px solid rgba(0,168,204,0.2);
-      border-radius: 16px;
-      background: rgba(0,30,42,0.6);
-      backdrop-filter: blur(20px);
+    .creator-handle {
+      font-size: 0.78rem; color: var(--muted);
     }
-    .cta-border::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: 16px;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(0,255,224,0.4), transparent 50%, rgba(0,255,224,0.1));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
+    .creator-spec {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,200,160,0.08);
+      border: 1px solid rgba(0,200,160,0.18);
+      border-radius: 100px; padding: 3px 12px;
+      font-size: 0.75rem; color: var(--accent);
+      margin-bottom: 12px;
     }
-    #cta h2 { margin-bottom: 20px; }
-    #cta p {
-      color: var(--text-muted);
-      font-size: 1.05rem;
-      margin-bottom: 40px;
-      line-height: 1.7;
+    .creator-bio {
+      font-size: 0.85rem; color: var(--muted);
+      line-height: 1.65; margin-bottom: 16px;
     }
-    .cta-note {
-      margin-top: 20px;
-      font-size: 0.78rem;
-      color: rgba(126,207,223,0.5);
-      letter-spacing: 0.05em;
+    .card-footer {
+      display: flex; justify-content: space-between;
+      align-items: center;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .card-stat {
+      text-align: center;
+    }
+    .card-stat-num {
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--text); line-height: 1;
+    }
+    .card-stat-lbl {
+      font-size: 0.72rem; color: var(--muted);
+      margin-top: 2px;
+    }
+    .card-arrow {
+      width: 34px; height: 34px;
+      background: rgba(0,200,160,0.1);
+      border: 1px solid rgba(0,200,160,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s, transform 0.3s;
+      color: var(--accent);
+    }
+    .creator-card:hover .card-arrow {
+      background: var(--accent);
+      color: #001820;
+      transform: translateX(-3px);
     }
 
     /* ── Footer ── */
     footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid rgba(0,168,204,0.12);
-      padding: 40px 60px;
-      display: flex;
-      justify-content: space-between;
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 36px 60px;
+      display: flex; justify-content: space-between;
       align-items: center;
-      color: var(--text-muted);
-      font-size: 0.82rem;
+      color: var(--muted); font-size: 0.82rem;
+      flex-wrap: wrap; gap: 16px;
     }
-
-    /* ── Animations ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
+    footer a { color: var(--accent); text-decoration: none; }
 
     /* ── Responsive ── */
-    @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; text-align: center; }
-      .hero-text { order: 2; }
-      .hero-creature { order: 1; }
-      #creatureCanvas { width: 300px; height: 300px; }
-      .hero-eyebrow { justify-content: center; }
-      .hero-sub { max-width: 100%; }
-      .cta-row { justify-content: center; }
-      .about-grid { grid-template-columns: 1fr; gap: 40px; }
-      nav { padding: 20px 24px; }
-      nav ul { gap: 20px; }
-      #about { padding: 80px 24px; }
-      #cta { padding: 80px 24px; }
-      .cta-border { padding: 50px 28px; }
-      footer { flex-direction: column; gap: 16px; text-align: center; }
-      .stats-bar { flex-wrap: wrap; }
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      #hero { padding: 60px 20px 40px; }
+      .filter-bar { padding: 0 20px 30px; }
+      #creators { padding: 0 20px 60px; grid-template-columns: 1fr; }
+      footer { padding: 28px 20px; flex-direction: column; text-align: center; }
+      .hero-stats { gap: 24px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Custom cursor -->
-  <div id="cursor"></div>
-  <div id="cursor-ring"></div>
+<canvas id="particles"></canvas>
 
-  <!-- Background particles -->
-  <canvas id="particles"></canvas>
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">✦</div>
+    AI <span>Creature</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#creators">יוצרים</a></li>
+    <li><a href="#about">אודות</a></li>
+    <li><a href="mailto:hello@buzzmarket.co.il">צור קשר</a></li>
+  </ul>
+  <a href="mailto:hello@buzzmarket.co.il" class="nav-cta">הצטרף כיוצר</a>
+</nav>
 
-  <!-- Nav -->
-  <nav>
-    <div class="logo">AI<span>Creature</span></div>
-    <ul>
-      <li><a href="#about">אודות</a></li>
-      <li><a href="#cta">צור קשר</a></li>
-    </ul>
-  </nav>
-
-  <!-- Hero -->
-  <section id="hero">
-    <div class="hero-inner">
-      <div class="hero-text">
-        <div class="hero-eyebrow">בינה מלאכותית מהדור הבא</div>
-        <h1>
-          היצור שחושב
-          <span class="accent">בשבילך</span>
-        </h1>
-        <p class="hero-sub">בינה מלאכותית שמכירה אותך — מסתגלת, לומדת ומתפתחת עם כל אינטראקציה.</p>
-        <div class="cta-row">
-          <a href="#cta" class="btn-primary">
-            התחל עכשיו
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <a href="#about" class="btn-secondary">
-            גלה עוד
-            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          </a>
-        </div>
-      </div>
-      <div class="hero-creature">
-        <canvas id="creatureCanvas" width="500" height="500"></canvas>
-      </div>
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-tag">פלטפורמת יצירת תוכן AI</div>
+    <h1>יוצרי AI.<br>תוכן <em>שמדבר</em> ללקוחות.</h1>
+    <p class="hero-sub">
+      הפלטפורמה שמחברת בין יוצרי וידאו ואנימציה מבוססי AI לבין עסקים שרוצים תוכן שמייצר תוצאות. מבית BuzzMarket.
+    </p>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="hero-stat-num">24+</div>
+      <div class="hero-stat-lbl">יוצרים פעילים</div>
     </div>
-  </section>
-
-  <!-- Stats -->
-  <div class="stats-bar">
-    <div class="stat-item">
-      <div class="stat-number">99.8%</div>
-      <div class="stat-label">דיוק תשובות</div>
+    <div>
+      <div class="hero-stat-num">500+</div>
+      <div class="hero-stat-lbl">סרטונים שנוצרו</div>
     </div>
-    <div class="stat-item">
-      <div class="stat-number">0.3s</div>
-      <div class="stat-label">זמן תגובה ממוצע</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-number">∞</div>
-      <div class="stat-label">יכולת למידה</div>
+    <div>
+      <div class="hero-stat-num">100%</div>
+      <div class="hero-stat-lbl">מבוסס AI</div>
     </div>
   </div>
+</section>
 
-  <!-- About -->
-  <section id="about">
-    <div class="section-label">על הפרויקט</div>
-    <div class="about-grid">
-      <div>
-        <h2>בינה שחיה,<br><em>לא רק עובדת</em></h2>
-      </div>
-      <div>
-        <div class="about-body">
-          <p>AI Creature אינו עוד כלי — זהו ישות דיגיטלית חיה שמתפתחת עם הזמן. היצור לומד את ההעדפות, את סגנון החשיבה ואת הצרכים שלך.</p>
-          <p>בכל שיחה, בכל שאילתה — היצור מתבגר ומעמיק את ההבנה שלו. לא סתם AI, אלא שותף חשיבה.</p>
+<div class="filter-bar">
+  <span class="filter-label">סינון:</span>
+  <button class="filter-btn active" data-filter="all">הכל</button>
+  <button class="filter-btn" data-filter="video">וידאו</button>
+  <button class="filter-btn" data-filter="animation">אנימציה</button>
+  <button class="filter-btn" data-filter="motion">מושן גרפיקס</button>
+  <button class="filter-btn" data-filter="avatar">אווטאר AI</button>
+</div>
+
+<div id="creators"></div>
+
+<footer id="about">
+  <div>© 2025 AI Creature · מבית <a href="https://www.buzzmarket.co.il" target="_blank">BuzzMarket</a></div>
+  <div>פלטפורמה לקריאייטיב מבוסס בינה מלאכותית</div>
+</footer>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────
+const creators = [
+  {
+    id: "noa-levi",
+    name: "נועה לוי",
+    handle: "@noa.creates",
+    spec: "אנימציה",
+    tag: "animation",
+    bio: "מתמחה באנימציות מוצר ובסרטוני סטוריטלינג. יוצרת עולמות ויזואליים שמחברים בין מותג לרגש.",
+    videos: 18, clients: 12, rating: 4.9,
+    color: "#00263a",
+    emoji: "🎨",
+    thumbs: ["🎬", "✨", "🌊"]
+  },
+  {
+    id: "yoav-cohen",
+    name: "יואב כהן",
+    handle: "@yoav.motion",
+    spec: "מושן גרפיקס",
+    tag: "motion",
+    bio: "מושן גרפיקס ברמה גבוהה לפרסומות דיגיטליות, ריילז ותוכן מותגי. מהיר, מדויק, מרשים.",
+    videos: 34, clients: 21, rating: 5.0,
+    color: "#001e2e",
+    emoji: "⚡",
+    thumbs: ["📱", "🎯", "💎"]
+  },
+  {
+    id: "maya-shapira",
+    name: "מאיה שפירא",
+    handle: "@maya.ai",
+    spec: "אווטאר AI",
+    tag: "avatar",
+    bio: "יוצרת דמויות AI ריאליסטיות לסרטוני הסבר, פרזנטציות ומודעות פרסום. פנים לכל מותג.",
+    videos: 22, clients: 15, rating: 4.8,
+    color: "#00243a",
+    emoji: "🤖",
+    thumbs: ["👤", "🎤", "📺"]
+  },
+  {
+    id: "dan-mizrahi",
+    name: "דן מזרחי",
+    handle: "@dan.video",
+    spec: "וידאו AI",
+    tag: "video",
+    bio: "מתמחה בהפקת וידאו מלא מבוסס AI — מסקריפט ועד עריכה סופית. מהיר וחסכוני.",
+    videos: 41, clients: 28, rating: 4.9,
+    color: "#002030",
+    emoji: "🎥",
+    thumbs: ["🏙️", "🚀", "🎵"]
+  },
+  {
+    id: "shir-ben-david",
+    name: "שיר בן דוד",
+    handle: "@shir.creates",
+    spec: "אנימציה",
+    tag: "animation",
+    bio: "אנימציות 2D ו-3D לעסקים קטנים ובינוניים. מחיר נגיש, תוצאה פרמיום.",
+    videos: 15, clients: 10, rating: 4.7,
+    color: "#001a28",
+    emoji: "🌟",
+    thumbs: ["🦋", "💫", "🌈"]
+  },
+  {
+    id: "oren-katz",
+    name: "אורן כץ",
+    handle: "@oren.motion",
+    spec: "מושן גרפיקס",
+    tag: "motion",
+    bio: "גרפיקה עיצובית בתנועה — מספר את הסיפור של המותג שלך בפחות מ-30 שניות.",
+    videos: 29, clients: 19, rating: 4.9,
+    color: "#002535",
+    emoji: "🎯",
+    thumbs: ["📊", "🔮", "⚙️"]
+  },
+];
+
+// ── Render ─────────────────────────────────────────────────────────
+function renderCreators(filter = 'all') {
+  const grid = document.getElementById('creators');
+  const list = filter === 'all' ? creators : creators.filter(c => c.tag === filter);
+  grid.innerHTML = list.map(c => `
+    <a class="creator-card" href="creator.html?id=${c.id}" data-tag="${c.tag}">
+      <div class="card-thumbs">
+        <div class="card-thumb">
+          <div class="thumb-placeholder" style="background:${c.color};font-size:2.5rem">${c.thumbs[0]}</div>
+          <div class="play-icon">
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke="#00c8a0" stroke-width="1.5"/>
+              <polygon points="10,8 17,12 10,16" fill="#00c8a0"/>
+            </svg>
+          </div>
         </div>
-        <div class="feature-list">
-          <div class="feature-item">
-            <div class="feature-icon">🧠</div>
-            <div>
-              <div class="feature-title">למידה מתמשכת</div>
-              <div class="feature-desc">היצור מתפתח עם כל אינטראקציה ומשתפר ללא הפסקה.</div>
-            </div>
+        <div class="card-thumb">
+          <div class="thumb-placeholder" style="background:${c.color};font-size:1.8rem">${c.thumbs[1]}</div>
+        </div>
+        <div class="card-thumb">
+          <div class="thumb-placeholder" style="background:${c.color};font-size:1.8rem">${c.thumbs[2]}</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="avatar">${c.emoji}</div>
+          <div>
+            <div class="creator-name">${c.name}</div>
+            <div class="creator-handle">${c.handle}</div>
           </div>
-          <div class="feature-item">
-            <div class="feature-icon">⚡</div>
-            <div>
-              <div class="feature-title">תגובה מיידית</div>
-              <div class="feature-desc">מהירות עיבוד על-אנושית — תשובות בשברירי שניות.</div>
-            </div>
+        </div>
+        <div class="creator-spec">✦ ${c.spec}</div>
+        <div class="creator-bio">${c.bio}</div>
+        <div class="card-footer">
+          <div class="card-stat">
+            <div class="card-stat-num">${c.videos}</div>
+            <div class="card-stat-lbl">סרטונים</div>
           </div>
-          <div class="feature-item">
-            <div class="feature-icon">🌐</div>
-            <div>
-              <div class="feature-title">רב-לשוני מטבעו</div>
-              <div class="feature-desc">עברית, אנגלית ועשרות שפות נוספות — ברמת שפת אם.</div>
-            </div>
+          <div class="card-stat">
+            <div class="card-stat-num">${c.clients}</div>
+            <div class="card-stat-lbl">לקוחות</div>
+          </div>
+          <div class="card-stat">
+            <div class="card-stat-num">⭐ ${c.rating}</div>
+            <div class="card-stat-lbl">דירוג</div>
+          </div>
+          <div class="card-arrow">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path d="M19 12H5M12 5l-7 7 7 7"/>
+            </svg>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </a>
+  `).join('');
+}
 
-  <!-- CTA -->
-  <section id="cta">
-    <div class="cta-bg"></div>
-    <div class="cta-border">
-      <div class="section-label">מוכן להתחיל?</div>
-      <h2>תן ליצור<br><em>לעבוד בשבילך</em></h2>
-      <p>הצטרף למאות משתמשים שכבר חווים את העתיד של הבינה המלאכותית.</p>
-      <a href="#" class="btn-primary">
-        התחל עכשיו — בחינם
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <div class="cta-note">אין צורך בכרטיס אשראי · בטוח ומוצפן</div>
-    </div>
-  </section>
+renderCreators();
 
-  <!-- Footer -->
-  <footer>
-    <div>© 2025 AI Creature. כל הזכויות שמורות.</div>
-    <div class="logo" style="font-size:1rem;">AI<span>Creature</span></div>
-  </footer>
-
-  <script>
-  // ── Custom cursor ──────────────────────────────────────────────
-  const cursor = document.getElementById('cursor');
-  const ring   = document.getElementById('cursor-ring');
-  let mx = -100, my = -100, rx = -100, ry = -100;
-
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-
-  function animCursor() {
-    cursor.style.left = mx + 'px';
-    cursor.style.top  = my + 'px';
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
-    requestAnimationFrame(animCursor);
-  }
-  animCursor();
-
-  // ── Particle background ────────────────────────────────────────
-  const pCanvas = document.getElementById('particles');
-  const pCtx    = pCanvas.getContext('2d');
-  let W, H, particles;
-
-  function resizeParticles() {
-    W = pCanvas.width  = window.innerWidth;
-    H = pCanvas.height = window.innerHeight;
-  }
-  resizeParticles();
-  window.addEventListener('resize', resizeParticles);
-
-  function makeParticle() {
-    return {
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: Math.random() * 1.8 + 0.3,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: -Math.random() * 0.5 - 0.1,
-      alpha: Math.random() * 0.5 + 0.1
-    };
-  }
-
-  particles = Array.from({ length: 120 }, makeParticle);
-
-  function drawParticles() {
-    pCtx.clearRect(0, 0, W, H);
-    for (const p of particles) {
-      pCtx.beginPath();
-      pCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      pCtx.fillStyle = `rgba(0,255,224,${p.alpha})`;
-      pCtx.fill();
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.y < -10 || p.x < -10 || p.x > W + 10) Object.assign(p, makeParticle(), { y: H + 10 });
-    }
-    requestAnimationFrame(drawParticles);
-  }
-  drawParticles();
-
-  // ── AI Creature canvas ─────────────────────────────────────────
-  const cc  = document.getElementById('creatureCanvas');
-  const ctx = cc.getContext('2d');
-  const CW  = 500, CH = 500;
-  const cx  = CW / 2, cy = CH / 2;
-
-  let mouseX = cx, mouseY = cy;
-  let glowIntensity = 0;
-
-  cc.addEventListener('mousemove', e => {
-    const rect = cc.getBoundingClientRect();
-    const scaleX = CW / rect.width;
-    const scaleY = CH / rect.height;
-    mouseX = (e.clientX - rect.left) * scaleX;
-    mouseY = (e.clientY - rect.top)  * scaleY;
-    glowIntensity = 1;
+// Filter
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCreators(btn.dataset.filter);
   });
-  cc.addEventListener('mouseleave', () => {
-    mouseX = cx; mouseY = cy;
-  });
+});
 
-  // Nodes
-  const NODE_COUNT = 28;
-  const nodes = [];
-  for (let i = 0; i < NODE_COUNT; i++) {
-    const angle = (i / NODE_COUNT) * Math.PI * 2;
-    const orbit = 80 + Math.random() * 100;
-    nodes.push({
-      baseAngle: angle,
-      orbit,
-      angle: angle + Math.random() * 0.5,
-      speed: (Math.random() - 0.5) * 0.008 + 0.003,
-      size:  Math.random() * 3 + 1.5,
-      pulse: Math.random() * Math.PI * 2,
-      pulseSpeed: Math.random() * 0.04 + 0.02,
-    });
+// ── Particles ──────────────────────────────────────────────────────
+const pc = document.getElementById('particles');
+const px = pc.getContext('2d');
+let PW, PH, pts;
+
+function resizePc() { PW = pc.width = window.innerWidth; PH = pc.height = window.innerHeight; }
+resizePc();
+window.addEventListener('resize', resizePc);
+
+function mkPt() {
+  return { x: Math.random()*PW, y: Math.random()*PH,
+           r: Math.random()*1.5+0.3,
+           vx: (Math.random()-0.5)*0.25, vy: -Math.random()*0.4-0.1,
+           a: Math.random()*0.4+0.1 };
+}
+pts = Array.from({length:80}, mkPt);
+
+(function drawPc() {
+  px.clearRect(0,0,PW,PH);
+  for (const p of pts) {
+    px.beginPath(); px.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    px.fillStyle = `rgba(0,200,160,${p.a})`; px.fill();
+    p.x += p.vx; p.y += p.vy;
+    if (p.y < -5 || p.x < -5 || p.x > PW+5) Object.assign(p, mkPt(), {y: PH+5});
   }
+  requestAnimationFrame(drawPc);
+})();
 
-  // Inner core blobs
-  const blobs = Array.from({ length: 6 }, (_, i) => ({
-    angle: (i / 6) * Math.PI * 2,
-    speed: 0.007 + Math.random() * 0.005,
-    r: 28 + Math.random() * 20,
-    size: 6 + Math.random() * 8,
-  }));
-
-  let t = 0;
-  let coreX = cx, coreY = cy;
-
-  function lerp(a, b, f) { return a + (b - a) * f; }
-
-  function drawCreature() {
-    ctx.clearRect(0, 0, CW, CH);
-    t += 0.016;
-    glowIntensity = lerp(glowIntensity, 0, 0.02);
-
-    const targetX = cx + (mouseX - cx) * 0.12;
-    const targetY = cy + (mouseY - cy) * 0.12;
-    coreX = lerp(coreX, targetX, 0.04);
-    coreY = lerp(coreY, targetY, 0.04);
-
-    const glow = 0.5 + glowIntensity * 0.5;
-
-    // ── Outer glow rings
-    for (let ring = 3; ring >= 1; ring--) {
-      const rg = ctx.createRadialGradient(coreX, coreY, 60 * ring * 0.3, coreX, coreY, 60 * ring);
-      rg.addColorStop(0, `rgba(0,255,224,${0.04 * glow * (4 - ring)})`);
-      rg.addColorStop(1, 'rgba(0,255,224,0)');
-      ctx.beginPath();
-      ctx.arc(coreX, coreY, 60 * ring, 0, Math.PI * 2);
-      ctx.fillStyle = rg;
-      ctx.fill();
+// ── Scroll reveal ──────────────────────────────────────────────────
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
     }
-
-    // ── Connection lines
-    for (let i = 0; i < nodes.length; i++) {
-      const ni = nodes[i];
-      ni.angle += ni.speed;
-      ni.pulse += ni.pulseSpeed;
-      const nx = coreX + Math.cos(ni.angle) * ni.orbit;
-      const ny = coreY + Math.sin(ni.angle) * ni.orbit;
-
-      for (let j = i + 1; j < nodes.length; j++) {
-        const nj = nodes[j];
-        const ox = coreX + Math.cos(nj.angle) * nj.orbit;
-        const oy = coreY + Math.sin(nj.angle) * nj.orbit;
-        const dist = Math.hypot(nx - ox, ny - oy);
-        if (dist < 160) {
-          const alpha = (1 - dist / 160) * 0.25 * glow;
-          ctx.beginPath();
-          ctx.moveTo(nx, ny);
-          ctx.lineTo(ox, oy);
-          ctx.strokeStyle = `rgba(0,200,200,${alpha})`;
-          ctx.lineWidth = 0.7;
-          ctx.stroke();
-        }
-      }
-
-      // Line to core
-      const distCore = Math.hypot(nx - coreX, ny - coreY);
-      if (distCore < 160) {
-        const a = (1 - distCore / 160) * 0.2 * glow;
-        ctx.beginPath();
-        ctx.moveTo(nx, ny);
-        ctx.lineTo(coreX, coreY);
-        ctx.strokeStyle = `rgba(0,255,224,${a})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-      }
-    }
-
-    // ── Nodes
-    for (const n of nodes) {
-      const nx = coreX + Math.cos(n.angle) * n.orbit;
-      const ny = coreY + Math.sin(n.angle) * n.orbit;
-      const pulse = 0.7 + 0.3 * Math.sin(n.pulse);
-      const size  = n.size * pulse;
-
-      const ng = ctx.createRadialGradient(nx, ny, 0, nx, ny, size * 3);
-      ng.addColorStop(0, `rgba(0,255,224,${0.6 * glow})`);
-      ng.addColorStop(1, 'rgba(0,255,224,0)');
-      ctx.beginPath();
-      ctx.arc(nx, ny, size * 3, 0, Math.PI * 2);
-      ctx.fillStyle = ng;
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.arc(nx, ny, size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(160,255,245,${0.9 * pulse * glow})`;
-      ctx.fill();
-    }
-
-    // ── Inner blobs
-    for (const b of blobs) {
-      b.angle += b.speed;
-      const bx = coreX + Math.cos(b.angle + t * 0.3) * b.r * (1 + 0.15 * Math.sin(t));
-      const by = coreY + Math.sin(b.angle + t * 0.3) * b.r * (1 + 0.15 * Math.cos(t * 1.3));
-      const bg = ctx.createRadialGradient(bx, by, 0, bx, by, b.size * 2);
-      bg.addColorStop(0, `rgba(0,255,220,${0.7 * glow})`);
-      bg.addColorStop(1, 'rgba(0,150,180,0)');
-      ctx.beginPath();
-      ctx.arc(bx, by, b.size * 2, 0, Math.PI * 2);
-      ctx.fillStyle = bg;
-      ctx.fill();
-    }
-
-    // ── Core orb
-    const coreR = 36 + 6 * Math.sin(t * 1.4);
-    const corePulse = Math.sin(t * 1.8) * 0.5 + 0.5;
-
-    const cg = ctx.createRadialGradient(coreX, coreY, 0, coreX, coreY, coreR * 2.5);
-    cg.addColorStop(0, `rgba(180,255,250,${0.9 * glow})`);
-    cg.addColorStop(0.3, `rgba(0,255,224,${0.7 * glow})`);
-    cg.addColorStop(0.7, `rgba(0,150,180,${0.3 * glow})`);
-    cg.addColorStop(1, 'rgba(0,62,81,0)');
-    ctx.beginPath();
-    ctx.arc(coreX, coreY, coreR * 2.5, 0, Math.PI * 2);
-    ctx.fillStyle = cg;
-    ctx.fill();
-
-    // Core bright center
-    ctx.beginPath();
-    ctx.arc(coreX, coreY, coreR * 0.4, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(230,255,252,${0.95 * glow})`;
-    ctx.fill();
-
-    // Rotating ring
-    ctx.save();
-    ctx.translate(coreX, coreY);
-    ctx.rotate(t * 0.4);
-    ctx.beginPath();
-    ctx.arc(0, 0, coreR + 14, 0, Math.PI * 1.4);
-    ctx.strokeStyle = `rgba(0,255,224,${0.4 * glow})`;
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-    ctx.rotate(Math.PI);
-    ctx.beginPath();
-    ctx.arc(0, 0, coreR + 20, 0, Math.PI * 0.8);
-    ctx.strokeStyle = `rgba(0,200,180,${0.25 * glow})`;
-    ctx.lineWidth = 1;
-    ctx.stroke();
-    ctx.restore();
-
-    // ── Scan line
-    const scanY = cy + Math.sin(t * 0.6) * 200;
-    const sl = ctx.createLinearGradient(0, scanY - 1, 0, scanY + 1);
-    sl.addColorStop(0,   'rgba(0,255,224,0)');
-    sl.addColorStop(0.5, `rgba(0,255,224,${0.08 * glow})`);
-    sl.addColorStop(1,   'rgba(0,255,224,0)');
-    ctx.fillStyle = sl;
-    ctx.fillRect(0, scanY - 30, CW, 60);
-
-    requestAnimationFrame(drawCreature);
-  }
-  drawCreature();
-
-  // ── Scroll reveal ──────────────────────────────────────────────
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.style.opacity = '1';
-        e.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.15 });
-
-  document.querySelectorAll('.feature-item, .stat-item, .cta-border').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(24px)';
-    el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
-    obs.observe(el);
   });
-  </script>
+}, {threshold: 0.1});
+
+document.querySelectorAll('.creator-card').forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = `opacity 0.5s ${i * 0.07}s ease, transform 0.5s ${i * 0.07}s ease, border-color 0.3s, box-shadow 0.3s`;
+  obs.observe(el);
+});
+</script>
 </body>
 </html>

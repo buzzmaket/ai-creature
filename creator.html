@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Creature — פרופיל יוצר</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #001820;
+      --surface:  #00263a;
+      --teal:     #003E51;
+      --accent:   #00c8a0;
+      --accent2:  #00a8cc;
+      --text:     #e8f8f5;
+      --muted:    #6ab5c4;
+      --border:   rgba(0,168,204,0.15);
+      --radius:   12px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Heebo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.5; }
+
+    /* Nav */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(0,24,32,0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 60px; height: 68px;
+    }
+    .logo {
+      font-size: 1.25rem; font-weight: 900;
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text);
+    }
+    .logo-icon {
+      width: 32px; height: 32px; background: var(--accent); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+      box-shadow: 0 0 16px rgba(0,200,160,0.5);
+    }
+    .logo span { color: var(--accent); }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--muted); text-decoration: none; font-size: 0.88rem;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--accent); }
+
+    /* Profile header */
+    .profile-header {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 60px 60px 0;
+    }
+    .profile-top {
+      display: flex; align-items: flex-start; gap: 36px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .avatar-lg {
+      width: 110px; height: 110px; min-width: 110px;
+      border-radius: 50%;
+      background: var(--teal);
+      border: 3px solid rgba(0,200,160,0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.8rem;
+      box-shadow: 0 0 28px rgba(0,200,160,0.2);
+    }
+    .profile-meta { flex: 1; min-width: 200px; }
+    .profile-spec {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,200,160,0.08); border: 1px solid rgba(0,200,160,0.2);
+      border-radius: 100px; padding: 4px 14px;
+      font-size: 0.78rem; color: var(--accent); margin-bottom: 10px;
+    }
+    .profile-name {
+      font-size: 2.2rem; font-weight: 900;
+      letter-spacing: -0.02em; margin-bottom: 4px;
+    }
+    .profile-handle { font-size: 0.9rem; color: var(--muted); margin-bottom: 14px; }
+    .profile-bio {
+      font-size: 0.95rem; color: var(--muted);
+      line-height: 1.75; max-width: 520px;
+    }
+    .profile-actions {
+      display: flex; flex-direction: column; gap: 12px;
+      align-self: center; min-width: 180px;
+    }
+    .btn-hire {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px 28px;
+      background: var(--accent); color: #001820;
+      font-family: 'Heebo', sans-serif; font-size: 0.95rem; font-weight: 700;
+      border: none; border-radius: 8px; cursor: pointer; text-decoration: none;
+      transition: box-shadow 0.3s, transform 0.2s;
+      box-shadow: 0 0 20px rgba(0,200,160,0.35);
+    }
+    .btn-hire:hover { transform: translateY(-2px); box-shadow: 0 0 36px rgba(0,200,160,0.55); }
+    .btn-contact {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 28px;
+      background: transparent; color: var(--accent);
+      font-family: 'Heebo', sans-serif; font-size: 0.9rem; font-weight: 500;
+      border: 1px solid rgba(0,200,160,0.35); border-radius: 8px;
+      cursor: pointer; text-decoration: none; transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-contact:hover { background: rgba(0,200,160,0.08); border-color: var(--accent); }
+
+    /* Stats row */
+    .stats-row {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 60px;
+      display: flex; gap: 0;
+    }
+    .stat-box {
+      flex: 1; padding: 28px 0;
+      border-left: 1px solid var(--border);
+      text-align: center;
+    }
+    .stat-box:last-child { border-right: 1px solid var(--border); }
+    .stat-num { font-size: 1.9rem; font-weight: 900; color: var(--accent); line-height: 1; }
+    .stat-lbl { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+    /* Videos section */
+    .section-wrap {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 56px 60px 100px;
+    }
+    .section-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 32px; flex-wrap: wrap; gap: 16px;
+    }
+    .section-title {
+      font-size: 1.5rem; font-weight: 900; letter-spacing: -0.02em;
+    }
+    .sort-select {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); font-family: 'Heebo', sans-serif;
+      font-size: 0.85rem; padding: 8px 16px; border-radius: 6px; cursor: pointer;
+    }
+
+    /* Videos grid */
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .video-card {
+      background: rgba(0,38,58,0.7);
+      border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .video-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0,200,160,0.35);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+    }
+    .video-thumb {
+      aspect-ratio: 16/9;
+      background: var(--teal);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+    }
+    .video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .video-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.35);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .video-card:hover .video-overlay { opacity: 1; }
+    .play-btn {
+      width: 52px; height: 52px;
+      background: rgba(0,200,160,0.9);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 24px rgba(0,200,160,0.6);
+    }
+    .video-duration {
+      position: absolute; bottom: 8px; left: 10px;
+      background: rgba(0,0,0,0.7);
+      color: #fff; font-size: 0.72rem; font-weight: 500;
+      padding: 2px 8px; border-radius: 4px;
+    }
+    .video-info { padding: 14px 16px; }
+    .video-title {
+      font-size: 0.9rem; font-weight: 700;
+      margin-bottom: 6px; line-height: 1.4;
+    }
+    .video-meta {
+      display: flex; justify-content: space-between;
+      font-size: 0.75rem; color: var(--muted);
+    }
+    .video-tag {
+      display: inline-block;
+      background: rgba(0,200,160,0.08);
+      border: 1px solid rgba(0,200,160,0.15);
+      border-radius: 100px; padding: 2px 10px;
+      font-size: 0.72rem; color: var(--accent);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .profile-header { padding: 40px 20px 0; }
+      .profile-top { gap: 20px; }
+      .stats-row { padding: 0 20px; }
+      .section-wrap { padding: 40px 20px 60px; }
+      .profile-actions { flex-direction: row; flex-wrap: wrap; width: 100%; }
+      .btn-hire, .btn-contact { flex: 1; text-align: center; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">✦</div>
+    AI <span>Creature</span>
+  </a>
+  <a href="index.html" class="back-btn">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l7 7-7 7"/></svg>
+    כל היוצרים
+  </a>
+</nav>
+
+<div id="page-content">
+  <!-- Injected by JS -->
+</div>
+
+<script>
+// ── Shared data ────────────────────────────────────────────────────
+const creators = {
+  "noa-levi": {
+    name: "נועה לוי", handle: "@noa.creates", spec: "אנימציה", emoji: "🎨",
+    bio: "מתמחה באנימציות מוצר ובסרטוני סטוריטלינג. יוצרת עולמות ויזואליים שמחברים בין מותג לרגש. עם ניסיון של 4 שנים בתחום יצירת תוכן AI, סייעתי ליותר מ-12 עסקים לבנות זהות ויזואלית מרשימה.",
+    stats: { videos: 18, clients: 12, rating: "4.9", views: "120K" },
+    videos: [
+      { title: "סרטון מוצר לאפליקציית פינטק", tag: "מוצר", duration: "0:45", thumb: "💳", views: "8.2K" },
+      { title: "אנימציית לוגו לסטארטאפ", tag: "מיתוג", duration: "0:15", thumb: "✨", views: "5.1K" },
+      { title: "סטוריטלינג לקמפיין חברתי", tag: "סושיאל", duration: "1:10", thumb: "🌍", views: "14K" },
+      { title: "הדרכה אנימציה לאפליקציה", tag: "הדרכה", duration: "2:30", thumb: "📱", views: "6.3K" },
+      { title: "וידאו רקע לאתר", tag: "וב", duration: "0:20", thumb: "🌊", views: "3.8K" },
+      { title: "סרטון ריאקשן למוצר חדש", tag: "סושיאל", duration: "0:30", thumb: "🎉", views: "11K" },
+    ]
+  },
+  "yoav-cohen": {
+    name: "יואב כהן", handle: "@yoav.motion", spec: "מושן גרפיקס", emoji: "⚡",
+    bio: "מושן גרפיקס ברמה גבוהה לפרסומות דיגיטליות, ריילז ותוכן מותגי. מהיר, מדויק, מרשים. עבדתי עם מותגים מובילים בישראל ויצרתי למעלה מ-34 פרויקטים מוצלחים.",
+    stats: { videos: 34, clients: 21, rating: "5.0", views: "280K" },
+    videos: [
+      { title: "פרסומת ריילז למוצר קוסמטיקה", tag: "פרסום", duration: "0:30", thumb: "💄", views: "22K" },
+      { title: "מושן גרפיקס לפרזנטציה", tag: "עסקי", duration: "1:20", thumb: "📊", views: "9.5K" },
+      { title: "אינטרו יוטיוב מותגי", tag: "יוטיוב", duration: "0:10", thumb: "▶️", views: "18K" },
+      { title: "סרטון אינפוגרפיקה דאטה", tag: "דאטה", duration: "2:00", thumb: "📈", views: "12K" },
+      { title: "פוסט אנימציה לאינסטגרם", tag: "סושיאל", duration: "0:15", thumb: "🔮", views: "31K" },
+      { title: "טיזר לאירוע השקה", tag: "אירוע", duration: "0:45", thumb: "💎", views: "15K" },
+    ]
+  },
+  "maya-shapira": {
+    name: "מאיה שפירא", handle: "@maya.ai", spec: "אווטאר AI", emoji: "🤖",
+    bio: "יוצרת דמויות AI ריאליסטיות לסרטוני הסבר, פרזנטציות ומודעות פרסום. כל לקוח מקבל 'פנים' ייחודיות לעסק שלו.",
+    stats: { videos: 22, clients: 15, rating: "4.8", views: "190K" },
+    videos: [
+      { title: "דובר AI לאתר נדל\"ן", tag: "נדל\"ן", duration: "1:30", thumb: "🏠", views: "16K" },
+      { title: "אווטאר הסבר לפרמקולוגיה", tag: "בריאות", duration: "3:00", thumb: "💊", views: "8.7K" },
+      { title: "מנהל מכירות וירטואלי", tag: "מכירות", duration: "2:15", thumb: "🎤", views: "24K" },
+      { title: "דמות AI לסרטון הדרכה", tag: "הדרכה", duration: "4:00", thumb: "📚", views: "11K" },
+      { title: "פרזנטור לסרטון פרסום", tag: "פרסום", duration: "0:45", thumb: "📺", views: "19K" },
+    ]
+  },
+  "dan-mizrahi": {
+    name: "דן מזרחי", handle: "@dan.video", spec: "וידאו AI", emoji: "🎥",
+    bio: "מתמחה בהפקת וידאו מלא מבוסס AI — מסקריפט ועד עריכה סופית. מהיר, חסכוני, ואיכותי. 41 פרויקטים, 28 לקוחות מרוצים.",
+    stats: { videos: 41, clients: 28, rating: "4.9", views: "350K" },
+    videos: [
+      { title: "קמפיין וידאו לשרות משלוחים", tag: "פרסום", duration: "0:30", thumb: "🚚", views: "45K" },
+      { title: "סרטון תדמית לחברת הייטק", tag: "תדמית", duration: "2:00", thumb: "🏙️", views: "28K" },
+      { title: "ריאקשן אפליקציית כושר", tag: "כושר", duration: "0:25", thumb: "💪", views: "33K" },
+      { title: "הסבר מוצר SaaS", tag: "טכנולוגיה", duration: "1:45", thumb: "🚀", views: "19K" },
+      { title: "רילז לאירוע מוזיקה", tag: "מוזיקה", duration: "0:20", thumb: "🎵", views: "67K" },
+      { title: "סרטון קייס-סטאדי", tag: "עסקי", duration: "3:30", thumb: "📋", views: "12K" },
+    ]
+  },
+  "shir-ben-david": {
+    name: "שיר בן דוד", handle: "@shir.creates", spec: "אנימציה", emoji: "🌟",
+    bio: "אנימציות 2D ו-3D לעסקים קטנים ובינוניים. מחיר נגיש, תוצאה פרמיום. מאמינה שכל עסק קטן ראוי לתוכן ברמה גבוהה.",
+    stats: { videos: 15, clients: 10, rating: "4.7", views: "95K" },
+    videos: [
+      { title: "אנימציית הסבר לעסק קטן", tag: "עסקי", duration: "1:20", thumb: "🏪", views: "7.2K" },
+      { title: "לוגו אנימציה צבעוני", tag: "מיתוג", duration: "0:10", thumb: "🌈", views: "4.8K" },
+      { title: "סרטון ילדים לחוג", tag: "ילדים", duration: "2:00", thumb: "🦋", views: "18K" },
+      { title: "פוסט אנימציה לבית קפה", tag: "מזון", duration: "0:15", thumb: "☕", views: "9.1K" },
+    ]
+  },
+  "oren-katz": {
+    name: "אורן כץ", handle: "@oren.motion", spec: "מושן גרפיקס", emoji: "🎯",
+    bio: "גרפיקה עיצובית בתנועה — מספר את הסיפור של המותג שלך בפחות מ-30 שניות. מתמחה בתוכן B2B ופרזנטציות עסקיות.",
+    stats: { videos: 29, clients: 19, rating: "4.9", views: "210K" },
+    videos: [
+      { title: "דוח שנתי אנימציה", tag: "עסקי", duration: "3:00", thumb: "📊", views: "14K" },
+      { title: "וידאו השקת מוצר B2B", tag: "מוצר", duration: "1:30", thumb: "⚙️", views: "21K" },
+      { title: "אינפוגרפיקה חברתית", tag: "סושיאל", duration: "0:45", thumb: "📱", views: "38K" },
+      { title: "טיזר כנס עסקי", tag: "אירוע", duration: "0:30", thumb: "🔮", views: "16K" },
+      { title: "מושן לוגו פינטק", tag: "מיתוג", duration: "0:12", thumb: "💰", views: "9.4K" },
+    ]
+  }
+};
+
+// ── Load page ──────────────────────────────────────────────────────
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
+const creator = creators[id];
+
+if (!creator) {
+  document.getElementById('page-content').innerHTML = `
+    <div style="text-align:center;padding:120px 20px;color:var(--muted)">
+      <div style="font-size:3rem;margin-bottom:20px">🤔</div>
+      <h2 style="margin-bottom:12px">יוצר לא נמצא</h2>
+      <a href="index.html" style="color:var(--accent)">חזרה לרשימה</a>
+    </div>`;
+} else {
+  document.title = `AI Creature — ${creator.name}`;
+  document.getElementById('page-content').innerHTML = `
+    <div class="profile-header">
+      <div class="profile-top">
+        <div class="avatar-lg">${creator.emoji}</div>
+        <div class="profile-meta">
+          <div class="profile-spec">✦ ${creator.spec}</div>
+          <div class="profile-name">${creator.name}</div>
+          <div class="profile-handle">${creator.handle}</div>
+          <div class="profile-bio">${creator.bio}</div>
+        </div>
+        <div class="profile-actions">
+          <a href="mailto:hello@buzzmarket.co.il?subject=שכירת ${creator.name}" class="btn-hire">
+            שכור את ${creator.name.split(' ')[0]}
+          </a>
+          <a href="mailto:hello@buzzmarket.co.il" class="btn-contact">צור קשר</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-num">${creator.stats.videos}</div>
+        <div class="stat-lbl">סרטונים</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">${creator.stats.clients}</div>
+        <div class="stat-lbl">לקוחות</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">⭐ ${creator.stats.rating}</div>
+        <div class="stat-lbl">דירוג</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">${creator.stats.views}</div>
+        <div class="stat-lbl">צפיות</div>
+      </div>
+    </div>
+
+    <div class="section-wrap">
+      <div class="section-top">
+        <div class="section-title">העבודות שלי</div>
+        <select class="sort-select">
+          <option>הכי פופולרי</option>
+          <option>הכי חדש</option>
+        </select>
+      </div>
+      <div class="videos-grid">
+        ${creator.videos.map(v => `
+          <div class="video-card">
+            <div class="video-thumb" style="background:var(--teal)">${v.thumb}
+              <div class="video-overlay">
+                <div class="play-btn">
+                  <svg width="20" height="20" fill="#001820" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                </div>
+              </div>
+              <div class="video-duration">${v.duration}</div>
+            </div>
+            <div class="video-info">
+              <div class="video-title">${v.title}</div>
+              <div class="video-meta">
+                <span class="video-tag">${v.tag}</span>
+                <span>${v.views} צפיות</span>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ── Particles ──────────────────────────────────────────────────────
+const pc = document.getElementById('particles');
+const px = pc.getContext('2d');
+let PW, PH, pts;
+function resizePc() { PW = pc.width = window.innerWidth; PH = pc.height = window.innerHeight; }
+resizePc(); window.addEventListener('resize', resizePc);
+function mkPt() {
+  return { x: Math.random()*PW, y: Math.random()*PH,
+           r: Math.random()*1.4+0.2, vx:(Math.random()-0.5)*0.2, vy:-Math.random()*0.35-0.08,
+           a: Math.random()*0.35+0.08 };
+}
+pts = Array.from({length:70}, mkPt);
+(function drawPc() {
+  px.clearRect(0,0,PW,PH);
+  for (const p of pts) {
+    px.beginPath(); px.arc(p.x,p.y,p.r,0,Math.PI*2);
+    px.fillStyle=`rgba(0,200,160,${p.a})`; px.fill();
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.y<-5||p.x<-5||p.x>PW+5) Object.assign(p,mkPt(),{y:PH+5});
+  }
+  requestAnimationFrame(drawPc);
+})();
+</script>
+</body>
+</html>
