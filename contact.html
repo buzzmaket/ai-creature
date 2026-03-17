@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בקשת פרויקט | BuzzMarket AI Creators</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:      #003E51;
+      --teal-dark: #002938;
+      --teal-mid:  #005166;
+      --teal-pale: #EEF5F7;
+      --gold:      #C8A84B;
+      --gold-dark: #A8882B;
+      --gold-pale: #FBF5E6;
+      --white:     #FFFFFF;
+      --off-white: #F8FAFB;
+      --gray-200:  #E2E8EB;
+      --gray-400:  #9BB0B8;
+      --gray-600:  #5A7A85;
+      --text:      #0D2B36;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --t: 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Heebo', sans-serif; background: var(--off-white); color: var(--text); }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 300;
+      background: var(--white); border-bottom: 1px solid var(--gray-200);
+      height: 64px; display: flex; align-items: center;
+      padding: 0 48px; gap: 32px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo-mark {
+      width: 32px; height: 32px; background: var(--teal); border-radius: 7px;
+      display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    .nav-logo-mark::after {
+      content: ''; position: absolute; bottom: -3px; right: -3px;
+      width: 9px; height: 9px; background: var(--gold);
+      border-radius: 50%; border: 2px solid var(--white);
+    }
+    .nav-brand { font-size: 0.95rem; font-weight: 900; color: var(--teal); line-height: 1; }
+    .nav-brand span { color: var(--gold); }
+    .nav-brand sub { display: block; font-size: 0.55rem; font-weight: 500; color: var(--gray-400); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 1px; vertical-align: baseline; }
+    .back-btn {
+      margin-right: auto;
+      display: inline-flex; align-items: center; gap: 7px;
+      color: var(--gray-600); text-decoration: none; font-size: 0.85rem; font-weight: 500;
+      border: 1.5px solid var(--gray-200); padding: 7px 16px; border-radius: 6px;
+      transition: border-color var(--t), color var(--t);
+    }
+    .back-btn:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* HERO STRIP */
+    .page-hero {
+      background: var(--teal);
+      padding: 40px 48px 36px;
+      position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 100% at 10% 50%, rgba(200,168,75,0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .page-hero-inner {
+      max-width: 860px; margin: 0 auto;
+      position: relative; z-index: 1;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    }
+    .page-hero-text {}
+    .page-hero-eyebrow {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+    }
+    .eyebrow-line { width: 28px; height: 1px; background: var(--gold); }
+    .eyebrow-txt { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
+    .page-hero-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 900; color: var(--white); letter-spacing: -0.025em; line-height: 1.15;
+    }
+    .page-hero-sub { margin-top: 6px; font-size: 0.88rem; color: rgba(255,255,255,0.6); }
+
+    /* Creator badge */
+    .creator-badge {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+    }
+    .creator-badge-emoji { font-size: 1.8rem; line-height: 1; }
+    .creator-badge-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+    .creator-badge-name { font-size: 1rem; font-weight: 800; color: var(--white); margin-top: 1px; }
+    .creator-badge-spec { font-size: 0.76rem; color: rgba(255,255,255,0.55); margin-top: 1px; }
+
+    /* FORM WRAPPER */
+    .form-wrapper {
+      max-width: 860px; margin: 0 auto;
+      padding: 32px 48px 56px;
+    }
+
+    /* Form card */
+    .form-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 28px 32px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,62,81,0.05);
+    }
+    .form-card-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 22px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .form-card-num {
+      width: 30px; height: 30px; background: var(--teal);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem; font-weight: 900; color: var(--white); flex-shrink: 0;
+    }
+    .form-card-title { font-size: 0.97rem; font-weight: 800; color: var(--teal); }
+    .form-card-sub { font-size: 0.74rem; color: var(--gray-400); margin-top: 1px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .form-row.single { grid-template-columns: 1fr; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-group label { font-size: 0.75rem; font-weight: 700; color: var(--teal); }
+    .form-group label span { color: var(--gold); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-family: 'Heebo', sans-serif; font-size: 0.9rem; color: var(--text);
+      background: var(--off-white); border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm); padding: 10px 14px;
+      transition: border-color var(--t), box-shadow var(--t), background var(--t);
+      width: 100%; outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--teal); background: var(--white);
+      box-shadow: 0 0 0 3px rgba(0,62,81,0.07);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--gray-400); }
+    .form-group textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+    .form-group select { cursor: pointer; color: var(--text); }
+    .form-group select option[value=""] { color: var(--gray-400); }
+
+    /* Checkboxes - project type */
+    .checkbox-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px; margin-bottom: 14px;
+    }
+    .check-item {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--off-white); border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm); padding: 9px 12px;
+      cursor: pointer; transition: border-color var(--t), background var(--t);
+      user-select: none;
+    }
+    .check-item:hover { border-color: var(--teal); }
+    .check-item input[type="checkbox"] { display: none; }
+    .check-item.checked {
+      border-color: var(--teal); background: var(--teal-pale);
+    }
+    .check-box {
+      width: 16px; height: 16px; flex-shrink: 0;
+      border: 1.5px solid var(--gray-400); border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--t), border-color var(--t);
+    }
+    .check-item.checked .check-box { background: var(--teal); border-color: var(--teal); }
+    .check-box svg { opacity: 0; transition: opacity var(--t); }
+    .check-item.checked .check-box svg { opacity: 1; }
+    .check-label { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .check-item.checked .check-label { color: var(--teal); }
+
+    /* Budget range pills */
+    .budget-pills {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 0;
+    }
+    .budget-pill {
+      display: flex; align-items: center;
+      background: var(--off-white); border: 1.5px solid var(--gray-200);
+      border-radius: 20px; padding: 7px 16px;
+      font-size: 0.82rem; font-weight: 600; color: var(--gray-600);
+      cursor: pointer; transition: border-color var(--t), background var(--t), color var(--t);
+      user-select: none;
+    }
+    .budget-pill:hover { border-color: var(--teal); color: var(--teal); }
+    .budget-pill input { display: none; }
+    .budget-pill.selected { border-color: var(--teal); background: var(--teal-pale); color: var(--teal); font-weight: 700; }
+
+    /* Submit */
+    .submit-area { margin-top: 4px; }
+    .btn-submit {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--teal); color: var(--white);
+      font-family: 'Heebo', sans-serif; font-size: 1rem; font-weight: 700;
+      padding: 15px 40px; border-radius: var(--radius-sm);
+      border: none; cursor: pointer; width: 100%; justify-content: center;
+      transition: background var(--t), transform var(--t), box-shadow var(--t);
+    }
+    .btn-submit:hover { background: var(--teal-mid); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(0,62,81,0.22); }
+    .btn-submit:hover svg { transform: translateX(-3px); }
+    .btn-submit svg { transition: transform var(--t); }
+    .form-note { margin-top: 10px; font-size: 0.72rem; color: var(--gray-400); text-align: center; }
+
+    /* SUCCESS STATE */
+    .success-screen {
+      display: none;
+      max-width: 860px; margin: 48px auto;
+      padding: 0 48px;
+      text-align: center;
+    }
+    .success-screen.show { display: block; }
+    .success-icon {
+      width: 72px; height: 72px;
+      background: #E8F5E9; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .success-title { font-size: 1.8rem; font-weight: 900; color: var(--teal); margin-bottom: 10px; }
+    .success-sub { font-size: 0.95rem; color: var(--gray-600); line-height: 1.7; max-width: 480px; margin: 0 auto 32px; }
+    .success-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--teal); color: var(--white);
+      font-family: 'Heebo', sans-serif; font-size: 0.9rem; font-weight: 700;
+      padding: 12px 28px; border-radius: var(--radius-sm);
+      text-decoration: none; transition: background var(--t);
+    }
+    .success-back:hover { background: var(--teal-mid); }
+
+    /* FOOTER */
+    footer {
+      background: var(--teal-dark); padding: 20px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 0;
+    }
+    .footer-brand { font-size: 0.8rem; font-weight: 700; color: rgba(255,255,255,0.4); }
+    .footer-brand span { color: var(--gold); }
+    .footer-legal { font-size: 0.72rem; color: rgba(255,255,255,0.25); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .page-hero { padding: 32px 20px 28px; }
+      .form-wrapper { padding: 24px 20px 40px; }
+      .form-card { padding: 22px 18px; }
+      .form-row { grid-template-columns: 1fr; }
+      .checkbox-grid { grid-template-columns: 1fr 1fr; }
+      .page-hero-inner { flex-direction: column; align-items: flex-start; }
+      footer { padding: 16px 20px; flex-direction: column; gap: 4px; text-align: center; }
+      .success-screen { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg width="16" height="16" fill="none" viewBox="0 0 18 18">
+        <circle cx="9" cy="9" r="7" stroke="white" stroke-width="1.5"/>
+        <path d="M6 9l2 2 4-4" stroke="#C8A84B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="nav-brand">
+      BUZZ MARKET <span>AI</span>
+      <sub>Creators Platform</sub>
+    </div>
+  </a>
+  <a id="back-link" href="index.html" class="back-btn">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l7 7-7 7"/></svg>
+    חזרה ליוצר
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-hero-text">
+      <div class="page-hero-eyebrow">
+        <span class="eyebrow-line"></span>
+        <span class="eyebrow-txt">בקשת פרויקט · BuzzMarket</span>
+      </div>
+      <div class="page-hero-title">ספר לנו על הפרויקט שלך</div>
+      <div class="page-hero-sub">נחזור אליך תוך יום עסקים עם הצעת מחיר</div>
+    </div>
+    <div id="creator-badge-wrap"></div>
+  </div>
+</div>
+
+<!-- FORM -->
+<div id="form-area">
+  <div class="form-wrapper">
+    <form id="contact-form" novalidate>
+
+      <!-- פרטים אישיים -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-num">א</div>
+          <div>
+            <div class="form-card-title">פרטי יצירת קשר</div>
+            <div class="form-card-sub">איך אנחנו מגיעים אליך?</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">שם פרטי <span>*</span></label>
+            <input type="text" id="fname" name="fname" placeholder="ישראל" required>
+          </div>
+          <div class="form-group">
+            <label for="lname">שם משפחה <span>*</span></label>
+            <input type="text" id="lname" name="lname" placeholder="ישראלי" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">אימייל <span>*</span></label>
+            <input type="email" id="email" name="email" placeholder="name@company.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">טלפון נייד <span>*</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="050-0000000" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="company">שם החברה / ארגון</label>
+            <input type="text" id="company" name="company" placeholder="חברה בע״מ">
+          </div>
+          <div class="form-group">
+            <label for="role">תפקיד</label>
+            <input type="text" id="role" name="role" placeholder="מנהל שיווק">
+          </div>
+        </div>
+      </div>
+
+      <!-- פרטי הפרויקט -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-num">ב</div>
+          <div>
+            <div class="form-card-title">פרטי הפרויקט</div>
+            <div class="form-card-sub">מה אתה צריך?</div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px">
+          <label>סוג התוכן <span>*</span></label>
+          <div class="checkbox-grid" id="type-grid">
+            <label class="check-item">
+              <input type="checkbox" name="type" value="וידאו AI">
+              <span class="check-box"><svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></span>
+              <span class="check-label">וידאו AI</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="type" value="אנימציה">
+              <span class="check-box"><svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></span>
+              <span class="check-label">אנימציה</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="type" value="מושן גרפיקס">
+              <span class="check-box"><svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></span>
+              <span class="check-label">מושן גרפיקס</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="type" value="אווטאר AI">
+              <span class="check-box"><svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></span>
+              <span class="check-label">אווטאר AI</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="type" value="פרסומת">
+              <span class="check-box"><svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></span>
+              <span class="check-label">פרסומת</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="type" value="אחר">
+              <span class="check-box"><svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 12 12"><polyline points="1.5,6 4.5,9 10.5,3"/></svg></span>
+              <span class="check-label">אחר</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="platform">פלטפורמת הפרסום</label>
+            <select id="platform" name="platform">
+              <option value="">בחר פלטפורמה...</option>
+              <option>אינסטגרם / ריילז</option>
+              <option>טיקטוק</option>
+              <option>יוטיוב</option>
+              <option>פייסבוק</option>
+              <option>לינקדאין</option>
+              <option>אתר אינטרנט</option>
+              <option>מסכי שילוט חוצות</option>
+              <option>פנים-ארגוני</option>
+              <option>מגוון פלטפורמות</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="deadline">מועד אספקה נדרש</label>
+            <input type="date" id="deadline" name="deadline">
+          </div>
+        </div>
+
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="brief">תיאור הפרויקט <span>*</span></label>
+            <textarea id="brief" name="brief" required
+              placeholder="תאר את הפרויקט: מה המטרה, מה המסר, מה הסגנון שאתה מחפש, האם יש חומרים קיימים (לוגו, מוזיקה, סקריפט)..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- תקציב -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-num">ג</div>
+          <div>
+            <div class="form-card-title">תקציב משוער</div>
+            <div class="form-card-sub">עוזר לנו להציע את הפתרון המתאים</div>
+          </div>
+        </div>
+        <div class="budget-pills" id="budget-pills">
+          <label class="budget-pill"><input type="radio" name="budget" value="עד 1,500 ₪">עד 1,500 ₪</label>
+          <label class="budget-pill"><input type="radio" name="budget" value="1,500–3,000 ₪">1,500–3,000 ₪</label>
+          <label class="budget-pill"><input type="radio" name="budget" value="3,000–6,000 ₪">3,000–6,000 ₪</label>
+          <label class="budget-pill"><input type="radio" name="budget" value="6,000–12,000 ₪">6,000–12,000 ₪</label>
+          <label class="budget-pill"><input type="radio" name="budget" value="מעל 12,000 ₪">מעל 12,000 ₪</label>
+          <label class="budget-pill"><input type="radio" name="budget" value="לא בטוח">לא בטוח עדיין</label>
+        </div>
+      </div>
+
+      <!-- שלח -->
+      <div class="form-card" style="margin-bottom:0">
+        <div class="submit-area">
+          <button type="submit" class="btn-submit">
+            שלח בקשת פרויקט לבאזמרקט
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          </button>
+          <p class="form-note">* שדות חובה. נחזור אליך תוך יום עסקים. הפרטים שלך נשמרים בסודיות.</p>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="success-screen">
+  <div class="success-icon">
+    <svg width="34" height="34" fill="none" stroke="#2E7D32" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <div class="success-title">הבקשה נשלחה בהצלחה!</div>
+  <p class="success-sub" id="success-msg">תודה! קיבלנו את בקשת הפרויקט שלך. צוות BuzzMarket יחזור אליך בתוך יום עסקים עם הצעת מחיר מותאמת.</p>
+  <a href="index.html" class="success-back">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l7 7-7 7"/></svg>
+    חזרה לפלטפורמה
+  </a>
+</div>
+
+<footer>
+  <div class="footer-brand">BUZZ MARKET <span>AI</span> · Creators Platform</div>
+  <div class="footer-legal">© 2024 BuzzMarket. כל הזכויות שמורות.</div>
+</footer>
+
+<script>
+  const creators = {
+    "noa-levi":      { name:"נועה לוי",    spec:"אנימציה",        emoji:"🎨" },
+    "yoav-cohen":    { name:"יואב כהן",    spec:"מושן גרפיקס",   emoji:"⚡" },
+    "maya-shapira":  { name:"מאיה שפירא",  spec:"אווטאר AI",     emoji:"🤖" },
+    "dan-mizrahi":   { name:"דן מזרחי",    spec:"וידאו AI",      emoji:"🎥" },
+    "shir-ben-david":{ name:"שיר בן דוד",  spec:"אנימציה",       emoji:"🌟" },
+    "oren-katz":     { name:"אורן כץ",     spec:"מושן גרפיקס",  emoji:"🎯" },
+  };
+
+  const params = new URLSearchParams(window.location.search);
+  const creatorId = params.get('creator');
+  const c = creators[creatorId];
+
+  /* Back link */
+  if (creatorId) {
+    document.getElementById('back-link').href = `creator.html?id=${creatorId}`;
+    document.getElementById('back-link').childNodes[2].textContent = ' חזרה ליוצר';
+  }
+
+  /* Creator badge */
+  if (c) {
+    document.getElementById('creator-badge-wrap').innerHTML = `
+      <div class="creator-badge">
+        <div class="creator-badge-emoji">${c.emoji}</div>
+        <div>
+          <div class="creator-badge-label">יוצר נבחר</div>
+          <div class="creator-badge-name">${c.name}</div>
+          <div class="creator-badge-spec">${c.spec}</div>
+        </div>
+      </div>`;
+  }
+
+  /* Checkbox toggle */
+  document.querySelectorAll('.check-item').forEach(item => {
+    item.addEventListener('click', () => item.classList.toggle('checked'));
+  });
+
+  /* Budget pills toggle */
+  document.querySelectorAll('.budget-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.budget-pill').forEach(p => p.classList.remove('selected'));
+      pill.classList.add('selected');
+    });
+  });
+
+  /* Submit */
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const fname = document.getElementById('fname').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const brief = document.getElementById('brief').value.trim();
+
+    if (!fname || !email || !phone || !brief) {
+      alert('אנא מלא את כל שדות החובה (שם, אימייל, טלפון ותיאור הפרויקט).');
+      return;
+    }
+
+    /* Hide form, show success */
+    document.getElementById('form-area').style.display = 'none';
+    const sc = document.getElementById('success-screen');
+    sc.classList.add('show');
+    if (c) {
+      document.getElementById('success-msg').textContent =
+        `תודה ${fname}! קיבלנו את בקשתך לעבוד עם ${c.name}. צוות BuzzMarket יחזור אליך בתוך יום עסקים עם הצעת מחיר מותאמת.`;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>
