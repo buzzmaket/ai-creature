@@ -252,27 +252,35 @@
     .btn-ghost svg { transition: transform var(--transition); }
     .btn-ghost:hover svg { transform: translateX(-4px); }
 
-    /* Hero stats strip */
+    /* Stats section — standalone */
+    .stats-section {
+      background: var(--white);
+      border-bottom: 3px solid var(--teal);
+      box-shadow: 0 4px 24px rgba(0,62,81,0.08);
+    }
     .hero-stats {
       display: flex; align-items: stretch;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      opacity: 0; animation: fadeUp 0.8s 0.65s forwards;
+      max-width: 100%;
     }
     .hero-stat {
-      flex: 1; padding: 32px 0;
-      border-left: 1px solid rgba(255,255,255,0.08);
-      position: relative;
+      flex: 1; padding: 36px 0;
+      border-left: 1px solid var(--gray-200);
+      text-align: center;
+      transition: background var(--transition);
     }
-    .hero-stat:last-child { border-right: 1px solid rgba(255,255,255,0.08); }
+    .hero-stat:last-child { border-right: 1px solid var(--gray-200); }
+    .hero-stat:hover { background: var(--teal-pale); }
     .hero-stat-num {
       font-size: 2.8rem; font-weight: 900;
-      color: var(--gold); line-height: 1;
+      color: var(--teal); line-height: 1;
       letter-spacing: -0.03em;
     }
+    .hero-stat-num span { color: var(--gold); }
     .hero-stat-lbl {
-      font-size: 0.78rem; font-weight: 400;
-      color: rgba(255,255,255,0.5);
-      margin-top: 6px; letter-spacing: 0.03em;
+      font-size: 0.78rem; font-weight: 500;
+      color: var(--gray-600);
+      margin-top: 6px; letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
 
     /* ─────────────────────────────────────────
@@ -484,10 +492,27 @@
        PROCESS SECTION
     ───────────────────────────────────────── */
     #process {
-      background: var(--off-white);
+      background: var(--teal);
       padding: 100px 64px;
-      border-top: 1px solid var(--gray-200);
     }
+    #process .section-label { color: var(--gold); }
+    #process .section-label::before { background: var(--gold); }
+    #process .section-title { color: var(--white); }
+    #process .section-title::after { background: var(--gold); }
+    #process .process-steps::before { background: rgba(255,255,255,0.15); }
+    #process .step-title { color: var(--white); }
+    #process .step-desc { color: rgba(255,255,255,0.6); }
+    #process .step-icon-bg {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+    }
+    #process .step-icon-bg svg { stroke: var(--gold); }
+    #process .process-step:hover .step-icon-bg {
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+    #process .process-step:hover .step-icon-bg svg { stroke: var(--teal); }
+    #process .step-badge { border-color: var(--teal); }
     .process-inner {
       max-width: 1200px; margin: 0 auto;
     }
@@ -721,7 +746,7 @@
       .about-features { grid-template-columns: 1fr 1fr; }
       footer { padding: 28px 24px; flex-direction: column; text-align: center; }
       .hero-stats { flex-wrap: wrap; }
-      .hero-stat { min-width: 50%; border-bottom: 1px solid rgba(255,255,255,0.06); }
+      .hero-stat { min-width: 50%; border-bottom: 1px solid var(--gray-200); }
     }
   </style>
 </head>
@@ -784,24 +809,6 @@
       </a>
     </div>
 
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-num">24<span style="font-size:1.4rem">+</span></div>
-        <div class="hero-stat-lbl">יוצרים פעילים</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">500<span style="font-size:1.4rem">+</span></div>
-        <div class="hero-stat-lbl">סרטונים שנוצרו</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">100<span style="font-size:1.4rem">%</span></div>
-        <div class="hero-stat-lbl">מבוסס AI</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">15<span style="font-size:1.4rem">+</span></div>
-        <div class="hero-stat-lbl">שנות ניסיון</div>
-      </div>
-    </div>
     </div><!-- end hero-text -->
 
     <!-- Hero Visual -->
@@ -822,6 +829,28 @@
 
   </div>
 </section>
+
+<!-- ── STATS ── -->
+<div class="stats-section">
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">24<span style="font-size:1.4rem">+</span></div>
+      <div class="hero-stat-lbl">יוצרים פעילים</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">500<span style="font-size:1.4rem">+</span></div>
+      <div class="hero-stat-lbl">סרטונים שנוצרו</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">100<span style="font-size:1.4rem">%</span></div>
+      <div class="hero-stat-lbl">מבוסס AI</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">15<span style="font-size:1.4rem">+</span></div>
+      <div class="hero-stat-lbl">שנות ניסיון</div>
+    </div>
+  </div>
+</div>
 
 <!-- ── FILTER ── -->
 <div class="filter-wrap">
