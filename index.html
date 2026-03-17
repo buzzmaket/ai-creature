@@ -466,18 +466,12 @@
     .card-bio {
       font-size: 0.84rem; font-weight: 400;
       color: var(--gray-600); line-height: 1.7;
-      flex: 1; margin-bottom: 18px;
+      flex: 1; margin-bottom: 0;
     }
 
-    .card-footer {
-      display: flex; align-items: center;
-      justify-content: flex-end;
-      padding-top: 16px;
-      border-top: 1px solid var(--gray-200);
-    }
     .card-cta {
       display: flex; align-items: center; justify-content: center;
-      width: 38px; height: 38px;
+      width: 34px; height: 34px; flex-shrink: 0;
       background: var(--teal-pale);
       border: 1px solid var(--gray-200);
       border-radius: 50%; color: var(--teal);
@@ -1146,9 +1140,14 @@ function renderCreators(filter = 'all') {
       <div class="card-body">
         <div class="card-top">
           <div class="card-avatar">${c.emoji}</div>
-          <div>
+          <div style="flex:1;min-width:0;">
             <div class="card-name">${c.name}</div>
             <div class="card-handle">${c.handle}</div>
+          </div>
+          <div class="card-cta">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path d="M19 12H5M12 5l-7 7 7 7"/>
+            </svg>
           </div>
         </div>
 
@@ -1158,14 +1157,6 @@ function renderCreators(filter = 'all') {
         </div>
 
         <p class="card-bio">${c.bio}</p>
-
-        <div class="card-footer">
-          <div class="card-cta">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-              <path d="M19 12H5M12 5l-7 7 7 7"/>
-            </svg>
-          </div>
-        </div>
       </div>
     </a>
   `).join('');
