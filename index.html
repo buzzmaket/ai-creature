@@ -170,34 +170,6 @@
       opacity: 0; animation: fadeUp 0.8s 0.35s forwards;
     }
 
-    /* Marquee */
-    .hero-marquee-wrap {
-      overflow: hidden;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding: 18px 0;
-      margin-bottom: 48px;
-      opacity: 0; animation: fadeUp 0.8s 0.45s forwards;
-    }
-    .hero-marquee {
-      display: flex; gap: 60px;
-      width: max-content;
-      animation: marquee 32s linear infinite;
-    }
-    .hero-marquee-text {
-      font-size: 0.85rem; font-weight: 300;
-      color: rgba(255,255,255,0.55);
-      line-height: 1.7;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .hero-marquee-text strong {
-      color: var(--gold); font-weight: 700;
-    }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
 
     .hero-actions {
       display: flex; align-items: center; gap: 16px;
@@ -682,15 +654,8 @@
     </h1>
 
     <p class="hero-sub">
-      הפלטפורמה שמחברת בין יוצרי וידאו ואנימציה מבוססי AI לבין עסקים שצריכים תוכן שעובד. מבית BuzzMarket — 15 שנות ניסיון בשיווק דיגיטלי.
+      יוצר ה-AI הוא המפיק המודרני. היוצר שלנו עומד במרכז התהליך ומנווט בין כלי ה-AI השונים בדיוק כמו מפיק מוזיקלי היוצר יצירה שלמה באולפן באמצעות המחשב. בבאזמרקט לקחנו את היסודות המקצועיים של עריכת הווידאו ושדרגנו אותם ליכולות הפקה בלתי מוגבלות. זוהי הסינרגיה המושלמת בין ניסיון טכני בכלי עריכה מתקדמים לבין חזון טכנולוגי, שיוצרת הפקות וידאו מלאות עם זהות ייחודית וחותמת אישית שאי אפשר לחקות.
     </p>
-
-    <div class="hero-marquee-wrap">
-      <div class="hero-marquee">
-        <span class="hero-marquee-text">היוצר שלנו עומד במרכז התהליך ומנווט בין כלי ה-AI השונים בדיוק כמו מפיק מוזיקלי היוצר יצירה שלמה באולפן באמצעות המחשב. בבאזמרקט לקחנו את היסודות המקצועיים של עריכת הווידאו ושדרגנו אותם ליכולות הפקה <strong>בלתי מוגבלות</strong>. זוהי הסינרגיה המושלמת בין ניסיון טכני בכלי עריכה מתקדמים לבין חזון טכנולוגי, שיוצרת הפקות וידאו מלאות עם זהות ייחודית וחותמת אישית שאי אפשר לחקות.</span>
-        <span class="hero-marquee-text">היוצר שלנו עומד במרכז התהליך ומנווט בין כלי ה-AI השונים בדיוק כמו מפיק מוזיקלי היוצר יצירה שלמה באולפן באמצעות המחשב. בבאזמרקט לקחנו את היסודות המקצועיים של עריכת הווידאו ושדרגנו אותם ליכולות הפקה <strong>בלתי מוגבלות</strong>. זוהי הסינרגיה המושלמת בין ניסיון טכני בכלי עריכה מתקדמים לבין חזון טכנולוגי, שיוצרת הפקות וידאו מלאות עם זהות ייחודית וחותמת אישית שאי אפשר לחקות.</span>
-      </div>
-    </div>
 
     <div class="hero-actions">
       <a href="#creators-section" class="btn-gold-lg">
