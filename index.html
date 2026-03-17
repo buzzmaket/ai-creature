@@ -151,26 +151,52 @@
     }
 
     .hero-headline {
-      font-size: clamp(3rem, 6.5vw, 6rem);
+      font-size: clamp(2.2rem, 5vw, 4.8rem);
       font-weight: 900;
-      line-height: 1.0;
+      line-height: 1.08;
       letter-spacing: -0.03em;
       color: var(--white);
-      margin-bottom: 28px;
+      margin-bottom: 32px;
       opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+      max-width: 800px;
     }
     .hero-headline .gold { color: var(--gold); }
-    .hero-headline .outline {
-      -webkit-text-stroke: 2px rgba(255,255,255,0.4);
-      color: transparent;
-    }
 
     .hero-sub {
-      font-size: 1.1rem; font-weight: 300;
+      font-size: 1.05rem; font-weight: 300;
       color: rgba(255,255,255,0.65);
-      line-height: 1.75; max-width: 520px;
-      margin-bottom: 48px;
+      line-height: 1.75; max-width: 560px;
+      margin-bottom: 40px;
       opacity: 0; animation: fadeUp 0.8s 0.35s forwards;
+    }
+
+    /* Marquee */
+    .hero-marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 18px 0;
+      margin-bottom: 48px;
+      opacity: 0; animation: fadeUp 0.8s 0.45s forwards;
+    }
+    .hero-marquee {
+      display: flex; gap: 60px;
+      width: max-content;
+      animation: marquee 32s linear infinite;
+    }
+    .hero-marquee-text {
+      font-size: 0.85rem; font-weight: 300;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.7;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .hero-marquee-text strong {
+      color: var(--gold); font-weight: 700;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
     }
 
     .hero-actions {
@@ -412,19 +438,9 @@
 
     .card-footer {
       display: flex; align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       padding-top: 16px;
       border-top: 1px solid var(--gray-200);
-    }
-    .card-stats { display: flex; gap: 20px; }
-    .card-stat-num {
-      font-size: 1.1rem; font-weight: 900; color: var(--teal); line-height: 1;
-    }
-    .card-stat-lbl {
-      font-size: 0.68rem; color: var(--gray-400); margin-top: 2px;
-    }
-    .card-divider {
-      width: 1px; height: 32px; background: var(--gray-200);
     }
     .card-cta {
       display: flex; align-items: center; justify-content: center;
@@ -437,6 +453,82 @@
     .creator-card:hover .card-cta {
       background: var(--gold); border-color: var(--gold);
       color: var(--teal); transform: translateX(-3px);
+    }
+
+    /* ─────────────────────────────────────────
+       PROCESS SECTION
+    ───────────────────────────────────────── */
+    #process {
+      background: var(--off-white);
+      padding: 100px 64px;
+      border-top: 1px solid var(--gray-200);
+    }
+    .process-inner {
+      max-width: 1200px; margin: 0 auto;
+    }
+    .process-header { margin-bottom: 64px; }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 28px; right: 14%;
+      width: 72%; height: 1px;
+      background: linear-gradient(to left, transparent, var(--gray-200) 10%, var(--gray-200) 90%, transparent);
+      z-index: 0;
+    }
+    .process-step {
+      padding: 0 32px 0 0;
+      position: relative; z-index: 1;
+    }
+    .process-step:last-child { padding-left: 0; }
+    .step-num {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2px solid var(--gray-200);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; font-weight: 900;
+      color: var(--teal);
+      margin-bottom: 24px;
+      transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+      position: relative;
+    }
+    .process-step:hover .step-num {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: var(--white);
+      box-shadow: 0 4px 20px rgba(0,62,81,0.2);
+    }
+    .step-num::after {
+      content: '';
+      position: absolute;
+      inset: -6px; border-radius: 50%;
+      border: 1px dashed rgba(0,62,81,0.15);
+      transition: border-color var(--transition);
+    }
+    .process-step:hover .step-num::after {
+      border-color: rgba(0,62,81,0.3);
+    }
+    .step-title {
+      font-size: 1rem; font-weight: 700;
+      color: var(--teal); margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .step-desc {
+      font-size: 0.82rem; color: var(--gray-600);
+      line-height: 1.65;
+    }
+    .step-line {
+      position: absolute;
+      top: 27px; left: -50%;
+      width: 100%; height: 1px;
+      background: var(--gray-200);
+      z-index: 0;
     }
 
     /* ─────────────────────────────────────────
@@ -534,6 +626,9 @@
       .filter-bar { padding: 16px 24px; }
       .creators-section { padding: 48px 24px 70px; }
       #creators { grid-template-columns: 1fr; }
+      #process { padding: 70px 24px; }
+      .process-steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .process-steps::before { display: none; }
       #about { padding: 70px 24px; }
       .about-inner { grid-template-columns: 1fr; gap: 48px; }
       .about-features { grid-template-columns: 1fr; }
@@ -581,14 +676,21 @@
     </div>
 
     <h1 class="hero-headline">
-      יוצרי AI.<br>
-      תוכן שמייצר<br>
-      <span class="gold">תוצאות.</span>
+      בעולם התוכן החדש,<br>
+      יוצר ה-AI הוא<br>
+      <span class="gold">המפיק המודרני</span>
     </h1>
 
     <p class="hero-sub">
       הפלטפורמה שמחברת בין יוצרי וידאו ואנימציה מבוססי AI לבין עסקים שצריכים תוכן שעובד. מבית BuzzMarket — 15 שנות ניסיון בשיווק דיגיטלי.
     </p>
+
+    <div class="hero-marquee-wrap">
+      <div class="hero-marquee">
+        <span class="hero-marquee-text">היוצר שלנו עומד במרכז התהליך ומנווט בין כלי ה-AI השונים בדיוק כמו מפיק מוזיקלי היוצר יצירה שלמה באולפן באמצעות המחשב. בבאזמרקט לקחנו את היסודות המקצועיים של עריכת הווידאו ושדרגנו אותם ליכולות הפקה <strong>בלתי מוגבלות</strong>. זוהי הסינרגיה המושלמת בין ניסיון טכני בכלי עריכה מתקדמים לבין חזון טכנולוגי, שיוצרת הפקות וידאו מלאות עם זהות ייחודית וחותמת אישית שאי אפשר לחקות.</span>
+        <span class="hero-marquee-text">היוצר שלנו עומד במרכז התהליך ומנווט בין כלי ה-AI השונים בדיוק כמו מפיק מוזיקלי היוצר יצירה שלמה באולפן באמצעות המחשב. בבאזמרקט לקחנו את היסודות המקצועיים של עריכת הווידאו ושדרגנו אותם ליכולות הפקה <strong>בלתי מוגבלות</strong>. זוהי הסינרגיה המושלמת בין ניסיון טכני בכלי עריכה מתקדמים לבין חזון טכנולוגי, שיוצרת הפקות וידאו מלאות עם זהות ייחודית וחותמת אישית שאי אפשר לחקות.</span>
+      </div>
+    </div>
 
     <div class="hero-actions">
       <a href="#creators-section" class="btn-gold-lg">
@@ -646,14 +748,49 @@
   <div id="creators"></div>
 </div>
 
+<!-- ── PROCESS ── -->
+<section id="process">
+  <div class="process-inner">
+    <div class="process-header">
+      <div class="section-label">תהליך העבודה</div>
+      <div class="section-title">תוכן שמייצר<br>תוצאות</div>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <div class="step-title">בחירת יוצר</div>
+        <div class="step-desc">עיון בפרופילי היוצרים, צפייה בעבודות קודמות ובחירת היוצר המתאים לסגנון ולמטרות הקמפיין.</div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <div class="step-title">קבלת בריף מהלקוח</div>
+        <div class="step-desc">שיחת עומק עם הלקוח להבנת המסר, קהל היעד, המותג והמטרות העסקיות של התוכן.</div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <div class="step-title">תסריט ותוצרים ויזואלים</div>
+        <div class="step-desc">כתיבת תסריט מקצועי ובניית קונספט ויזואלי — סטורי-בורד, בחירת סגנון וזהות גרפית.</div>
+      </div>
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <div class="step-title">הפקת הסרטון</div>
+        <div class="step-desc">הפקה מלאה עם כלי AI מתקדמים, עריכה, פוסט-פרודקשן ואספקת הגרסה הסופית.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── ABOUT ── -->
 <section id="about">
   <div class="about-inner">
     <div class="about-text">
       <div class="section-label">מי אנחנו</div>
-      <div class="section-title">תוכן AI שמדבר<br><em>ללקוחות שלך</em></div>
+      <div class="section-title">הגשר בין<br><em>עסקים לתוכן</em></div>
       <p class="about-desc" style="margin-top:24px">
-        באזמרקט מחברת בין עסקים לבין יוצרי תוכן AI מהטובים בישראל. כל יוצר הוא מומחה בסגנון שלו — ביחד הם מספקים מגוון רחב של פתרונות וידאו ואנימציה, מהיר ובמחיר נגיש.
+        באזמרקט היא הגשר המקצועי בין רשויות מקומיות, גופים ציבוריים וחברות גדולות לבין עולם הפרסום. עם מעל 15 שנות ניסיון, אנו משלבים ייעוץ אסטרטגי וניהול מערכי תוכן מורכבים ליצירת אימפקט ציבורי ועסקי רחב.
+      </p>
+      <p class="about-desc" style="margin-top:16px">
+        אנו מנגישים לארגונים את חזית הטכנולוגיה דרך נבחרת יוצרי ה-AI המובילים בישראל. השילוב בין הניסיון האסטרטגי שלנו ליכולות ה-AI מאפשר הפקת וידאו ואנימציה בסטנדרט גבוה, במהירות ובדיוק המתאימים לצרכים של גופים גדולים.
       </p>
     </div>
     <div class="about-features">
@@ -789,22 +926,6 @@ function renderCreators(filter = 'all') {
         <p class="card-bio">${c.bio}</p>
 
         <div class="card-footer">
-          <div class="card-stats">
-            <div>
-              <div class="card-stat-num">${c.videos}</div>
-              <div class="card-stat-lbl">סרטונים</div>
-            </div>
-            <div class="card-divider"></div>
-            <div>
-              <div class="card-stat-num">${c.clients}</div>
-              <div class="card-stat-lbl">לקוחות</div>
-            </div>
-            <div class="card-divider"></div>
-            <div>
-              <div class="card-stat-num">⭐ ${c.rating}</div>
-              <div class="card-stat-lbl">דירוג</div>
-            </div>
-          </div>
           <div class="card-cta">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
               <path d="M19 12H5M12 5l-7 7 7 7"/>
