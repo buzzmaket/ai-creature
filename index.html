@@ -395,20 +395,16 @@
 
     /* Thumbs */
     .card-thumbs {
-      display: grid;
-      grid-template-columns: 3fr 2fr;
-      grid-template-rows: 1fr 1fr;
-      height: 200px; gap: 2px;
-      background: var(--gray-200);
+      aspect-ratio: 16/9;
       border-radius: var(--radius-md) var(--radius-md) 0 0;
-      overflow: hidden;
-    }
-    .card-thumb {
-      background: var(--teal-pale);
       overflow: hidden; position: relative;
+      background: var(--teal-pale);
       display: flex; align-items: center; justify-content: center;
     }
-    .card-thumb:first-child { grid-row: 1 / 3; }
+    .card-thumb {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
     .card-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
     .creator-card:hover .card-thumb img { transform: scale(1.06); }
     .thumb-emoji {
@@ -1121,20 +1117,14 @@ function renderCreators(filter = 'all') {
 
   grid.innerHTML = list.map((c, i) => `
     <a class="creator-card" href="creator.html?id=${c.id}" style="transition-delay:${i * 0.08}s">
-      <div class="card-thumbs">
-        <div class="card-thumb" style="background:${c.thumbColor[0]}">
+      <div class="card-thumbs" style="background:${c.thumbColor[0]}">
+        <div class="card-thumb">
           <div class="thumb-emoji">${c.emoji}</div>
           <div class="thumb-play">
             <div class="play-circle">
               <svg width="18" height="18" fill="var(--teal)" viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>
             </div>
           </div>
-        </div>
-        <div class="card-thumb" style="background:${c.thumbColor[1]}">
-          <div class="thumb-emoji" style="font-size:1.4rem">🎬</div>
-        </div>
-        <div class="card-thumb" style="background:${c.thumbColor[2]}">
-          <div class="thumb-emoji" style="font-size:1.4rem">✨</div>
         </div>
       </div>
 
