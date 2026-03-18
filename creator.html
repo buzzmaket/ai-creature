@@ -173,24 +173,6 @@
     }
     .bio-text { font-size: 0.93rem; color: var(--gray-600); line-height: 1.8; }
 
-    /* ── STATS BAR (below bio) ── */
-    .stats-bar {
-      background: var(--white);
-      border: 1px solid var(--gray-200);
-      border-radius: var(--radius);
-      display: flex; margin-bottom: 24px;
-      overflow: hidden;
-    }
-    .stat-box {
-      flex: 1; padding: 20px 16px;
-      text-align: center;
-      border-left: 1px solid var(--gray-200);
-    }
-    .stat-box:last-child { border-left: none; }
-    .stat-num { font-size: 1.6rem; font-weight: 900; color: var(--teal); line-height: 1; }
-    .stat-num span { font-size: 1rem; color: var(--gold); }
-    .stat-lbl { font-size: 0.72rem; color: var(--gray-400); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
-
     /* Videos */
     .videos-section { padding-bottom: 48px; }
     .section-top {
@@ -220,43 +202,23 @@
     .video-card {
       background: var(--white); border: 1px solid var(--gray-200);
       border-radius: var(--radius); overflow: hidden;
-      transition: transform var(--t), border-color var(--t), box-shadow var(--t);
+      transition: border-color var(--t);
       cursor: pointer;
     }
-    .video-card:hover { transform: translateY(-4px); border-color: var(--teal); box-shadow: 0 8px 28px rgba(0,62,81,0.1); }
+    .video-card:hover { border-color: var(--teal); }
     .video-thumb {
       aspect-ratio: 16/9;
       background: var(--teal-pale);
       position: relative; overflow: hidden;
       display: flex; align-items: center; justify-content: center;
-      font-size: 2.2rem;
     }
     .video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .video-overlay {
-      position: absolute; inset: 0;
-      background: rgba(0,62,81,0.4);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; transition: opacity var(--t);
-    }
-    .video-card:hover .video-overlay { opacity: 1; }
-    .play-btn {
-      width: 44px; height: 44px;
-      background: var(--gold); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .video-duration {
-      position: absolute; bottom: 7px; left: 9px;
-      background: rgba(0,0,0,0.6); color: #fff;
-      font-size: 0.68rem; font-weight: 600;
-      padding: 2px 7px; border-radius: 3px;
-    }
     .video-info { padding: 12px 14px; }
-    .video-title { font-size: 0.86rem; font-weight: 700; color: var(--text); margin-bottom: 7px; line-height: 1.4; }
+    .video-title { font-size: 0.86rem; font-weight: 600; color: var(--text); margin-bottom: 6px; line-height: 1.4; }
     .video-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; color: var(--gray-400); }
     .video-tag {
-      background: var(--teal-pale); border: 1px solid rgba(0,62,81,0.1);
-      border-radius: 3px; padding: 2px 8px;
-      font-size: 0.68rem; font-weight: 700; color: var(--teal);
+      background: var(--teal-pale); border-radius: 3px; padding: 2px 8px;
+      font-size: 0.68rem; font-weight: 600; color: var(--teal);
     }
 
     /* ── BOOKING FOOTER ── */
@@ -264,13 +226,6 @@
       background: var(--teal);
       margin-top: 0;
       padding: 52px 48px;
-      position: relative; overflow: hidden;
-    }
-    .booking-footer::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 70% 80% at 30% 50%, rgba(200,168,75,0.1) 0%, transparent 65%);
-      pointer-events: none;
     }
     .booking-inner {
       max-width: 1200px; margin: 0 auto;
@@ -341,11 +296,6 @@
       .main-inner { padding: 24px 20px 0; }
       .profile-actions { width: 100%; }
       .btn-gold, .btn-outline { flex: 1; justify-content: center; }
-      .stats-bar { flex-wrap: wrap; }
-      .stat-box { min-width: 50%; }
-      .stat-box:nth-child(2) { border-left: none; }
-      .stat-box:nth-child(3) { border-top: 1px solid var(--gray-200); }
-      .stat-box:nth-child(4) { border-top: 1px solid var(--gray-200); border-left: none; }
       .booking-footer { padding: 40px 20px; }
       .booking-inner { flex-direction: column; align-items: flex-start; }
       footer { padding: 18px 20px; flex-direction: column; gap: 4px; text-align: center; }
@@ -508,26 +458,6 @@ if (!c) {
         <div class="bio-text">${c.bio}</div>
       </div>
 
-      <!-- Stats (below bio) -->
-      <div class="stats-bar">
-        <div class="stat-box">
-          <div class="stat-num">${c.stats.videos}<span>+</span></div>
-          <div class="stat-lbl">סרטונים</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">${c.stats.clients}<span>+</span></div>
-          <div class="stat-lbl">לקוחות</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">${c.stats.rating}<span>⭐</span></div>
-          <div class="stat-lbl">דירוג</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">${c.stats.views}</div>
-          <div class="stat-lbl">צפיות</div>
-        </div>
-      </div>
-
       <!-- Videos -->
       <div class="videos-section">
         <div class="section-top">
@@ -537,19 +467,12 @@ if (!c) {
         <div class="videos-grid">
           ${c.videos.map(v => `
             <div class="video-card">
-              <div class="video-thumb">${v.thumb}
-                <div class="video-overlay">
-                  <div class="play-btn">
-                    <svg width="16" height="16" fill="var(--teal)" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-                  </div>
-                </div>
-                <div class="video-duration">${v.duration}</div>
-              </div>
+              <div class="video-thumb"></div>
               <div class="video-info">
                 <div class="video-title">${v.title}</div>
                 <div class="video-meta">
                   <span class="video-tag">${v.tag}</span>
-                  <span>${v.views} צפיות</span>
+                  <span>${v.duration}</span>
                 </div>
               </div>
             </div>
